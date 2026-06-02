@@ -76,8 +76,8 @@ function TextMasthead({ content, options }: TextMastheadProps) {
 
         {/* Links / CTAs */}
         {(content?.links?.length ?? 0) > 0 && (
-          <div>
-            <LinkGroup links={content!.links!} />
+          <div className="w-fit">
+            <LinkGroup links={content!.links!} centered={!leftAlign} />
           </div>
         )}
       </div>

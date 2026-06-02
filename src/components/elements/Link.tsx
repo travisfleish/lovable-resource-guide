@@ -20,8 +20,9 @@ export type LinkProps = {
 export function Link(props: LinkProps) {
   const { link, type, href, to, target, children, className, onClick, ...other } = props;
   const url = link?.url || href || to || "#";
+  const isPlainLink = !type && !children;
   const defaultLinkClasses = `inline-flex items-center ${className || ""} ${
-    !url || url === "#" ? "pointer-events-none cursor-default" : ""
+    isPlainLink && (!url || url === "#") ? "pointer-events-none cursor-default" : ""
   }`;
 
   return (

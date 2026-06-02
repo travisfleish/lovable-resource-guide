@@ -21,6 +21,13 @@
 /* Trial weights (internal use / sales collateral only) */
 @font-face {
   font-family: "KlarheitKurrent";
+  src: url("/fonts/ESKlarheitKurrent-Bk_TRIAL.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "KlarheitKurrent";
   src: url("/fonts/ESKlarheitKurrent-Md_TRIAL.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;

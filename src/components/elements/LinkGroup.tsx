@@ -20,9 +20,9 @@ function LinkGroup({ links, className = "", noFullWidthOnMobile, centered = fals
     >
       <div className={clsx("-mb-4 flex flex-col md:flex-row md:space-x-5", centered ? "items-center justify-center" : "")}>
         {links?.length > 0 &&
-          links.map(({ link }, i) => (
+          links.map((item, i) => (
             <div key={`linkgroupitem${i}`} className={clsx(links.length > 1 && "pb-4", centered && "mx-auto w-fit")}>
-              <Link link={link} className={links.length > 1 ? "w-full md:w-auto" : ""} />
+              <Link {...item} className={links.length > 1 ? "w-full md:w-auto" : ""} />
             </div>
           ))}
       </div>

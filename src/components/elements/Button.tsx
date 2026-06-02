@@ -24,6 +24,7 @@ const backgroundColorMap: Record<string, string> = {
   navy: "bg-navy",
   white: "bg-white",
   "light-grey": "bg-navy/[0.05] text-navy hover:bg-blue hover:text-white",
+  lightGrey: "bg-lightGrey",
   white15: "bg-white/15",
   navy5: "bg-navy/5",
 };
@@ -39,6 +40,7 @@ const textColorMap: Record<string, { initial: string; hover: string }> = {
   "white-alt": { initial: "text-blue font-semibold", hover: "text-blue font-semibold" },
   white: { initial: "text-navy", hover: "text-blue" },
   navy: { initial: "text-white", hover: "text-white" },
+  lightGrey: { initial: "text-navy", hover: "text-white" },
   white15: { initial: "text-white", hover: "text-blue" },
   navy5: { initial: "text-navy", hover: "text-white" },
 };
@@ -47,6 +49,7 @@ const linesColorMap: Record<string, string> = {
   "white-alt": "bg-lightBlue",
   white: "bg-lightBlue",
   navy: "bg-blue",
+  lightGrey: "bg-blue",
   white15: "bg-lightBlue",
   navy5: "bg-blue",
 };

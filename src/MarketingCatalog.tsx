@@ -119,7 +119,16 @@ const SECTIONS = [
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function MarketingCatalog({ onBack }: { onBack: () => void }) {
+type PageType = "demo" | "catalog" | "brand-guide" | "glossary" | "best-practices";
+
+const CROSS_NAV: { id: PageType; label: string }[] = [
+  { id: "brand-guide", label: "Brand Guide" },
+  { id: "glossary", label: "Glossary" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "catalog", label: "Catalog" },
+];
+
+export default function MarketingCatalog({ onNavigate }: { onNavigate: (page: PageType) => void }) {
   const [activeSection, setActiveSection] = useState("colors");
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -149,10 +158,10 @@ export default function MarketingCatalog({ onBack }: { onBack: () => void }) {
         <div className="flex h-14 items-center justify-between px-6 lg:px-10">
           <div className="flex items-center gap-4">
             <button
-              onClick={onBack}
+              onClick={() => onNavigate("demo")}
               className="font-body text-[13px] text-navy/40 transition-colors hover:text-navy"
             >
-              ← Back
+              ← Demo
             </button>
             <span className="text-navy/20">/</span>
             <div className="flex items-center gap-2.5">
@@ -160,9 +169,21 @@ export default function MarketingCatalog({ onBack }: { onBack: () => void }) {
               <span className="font-heading text-[15px] font-medium text-navy">Brand Guide</span>
             </div>
           </div>
-          <span className="hidden font-body text-[12px] text-navy/30 md:block">
-            For use with Genius Sports Lovable
-          </span>
+          <nav className="hidden items-center gap-1 md:flex">
+            {CROSS_NAV.map(({ id, label }) => (
+              <button
+                key={id}
+                onClick={() => onNavigate(id)}
+                className={`rounded-full px-3 py-1.5 font-body text-[12px] transition-colors ${
+                  id === "brand-guide"
+                    ? "bg-navy text-white"
+                    : "text-navy/50 hover:bg-navy/5 hover:text-navy"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
         </div>
 
         {/* Mobile nav — horizontal scroll */}

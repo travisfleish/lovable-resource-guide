@@ -108,7 +108,16 @@ const NAV_ITEMS = [
 
 // ─── Catalog ─────────────────────────────────────────────────────────────────
 
-export default function Catalog({ onBack }: { onBack: () => void }) {
+type PageType = "demo" | "catalog" | "brand-guide" | "glossary" | "best-practices";
+
+const CROSS_NAV: { id: PageType; label: string }[] = [
+  { id: "brand-guide", label: "Brand Guide" },
+  { id: "glossary", label: "Glossary" },
+  { id: "best-practices", label: "Best Practices" },
+  { id: "catalog", label: "Catalog" },
+];
+
+export default function Catalog({ onNavigate }: { onNavigate: (page: PageType) => void }) {
   return (
     <div className="min-h-screen bg-white text-navy">
 
@@ -117,7 +126,7 @@ export default function Catalog({ onBack }: { onBack: () => void }) {
         <div className="container mx-auto flex h-14 items-center justify-between gap-6 px-6 lg:px-12">
           <div className="flex items-center gap-4">
             <button
-              onClick={onBack}
+              onClick={() => onNavigate("demo")}
               className="flex items-center gap-1.5 font-body text-[13px] text-navy/50 transition-colors hover:text-navy"
             >
               ← Demo
@@ -125,17 +134,39 @@ export default function Catalog({ onBack }: { onBack: () => void }) {
             <span className="text-navy/20">/</span>
             <span className="font-heading text-[14px] font-medium text-navy">Brand Catalog</span>
           </div>
-          <nav className="hidden items-center gap-5 overflow-x-auto md:flex">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                className="shrink-0 font-body text-[12px] text-navy/50 transition-colors hover:text-navy"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          <div className="flex items-center gap-4">
+            <nav className="hidden items-center gap-1 md:flex">
+              {CROSS_NAV.map(({ id, label }) => (
+                <button
+                  key={id}
+                  onClick={() => onNavigate(id)}
+                  className={`rounded-full px-3 py-1.5 font-body text-[12px] transition-colors ${
+                    id === "catalog"
+                      ? "bg-navy text-white"
+                      : "text-navy/50 hover:bg-navy/5 hover:text-navy"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
+        {/* Section anchor nav */}
+        <div className="border-t border-lavenderGrey/60">
+          <div className="container mx-auto overflow-x-auto px-6 lg:px-12">
+            <nav className="flex h-10 items-center gap-5">
+              {NAV_ITEMS.map((item) => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className="shrink-0 font-body text-[11px] text-navy/50 transition-colors hover:text-navy"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </div>
         </div>
       </header>
 
