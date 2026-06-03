@@ -51,9 +51,7 @@ function FeatureCard({ emoji, title, children }: { emoji: string; title: string;
   return (
     <div className="rounded-xl bg-lightGrey p-6">
       <div className="mb-3 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-[18px]">
-          {emoji}
-        </div>
+        <span className="text-[22px] leading-none">{emoji}</span>
         <h3 className="font-heading text-[17px] font-medium text-navy">{title}</h3>
       </div>
       <div className="space-y-2 font-body text-[14px] leading-relaxed text-navy/70">
