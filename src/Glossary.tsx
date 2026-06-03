@@ -279,7 +279,7 @@ const CATEGORIES: Category[] = [
 
 function TermCard({ term, definition, lovableTip }: Term) {
   return (
-    <div className="rounded-xl border border-lavenderGrey bg-white p-5">
+    <div className="rounded-xl bg-lightGrey p-5">
       <p className="font-heading text-[17px] font-medium text-navy">{term}</p>
       <p className="mt-2 font-body text-[14px] leading-relaxed text-navy/70">{definition}</p>
       <div className="mt-4 rounded-lg bg-blue/[0.05] px-4 py-3">
