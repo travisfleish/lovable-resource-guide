@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Logo from "./components/brand/Logo";
+import Button from "./components/elements/Button";
 
 type PageType = "demo" | "catalog" | "brand-guide" | "glossary" | "best-practices";
 
@@ -12,7 +13,8 @@ const NAV_PAGES: { id: PageType; label: string }[] = [
 
 const PAGE_SECTIONS = [
   { id: "glossary-usage",    label: "Using the Glossary" },
-  { id: "chatgpt-workflow",  label: "ChatGPT Workflow" },
+  { id: "chatgpt-workflow",  label: "LovableGPT Workflow" },
+  { id: "before-you-start",  label: "Before You Start" },
   { id: "efficient-prompts", label: "Efficient Prompting" },
   { id: "lovable-features",  label: "Lovable Features" },
   { id: "starter-prompts",   label: "Starter Prompts" },
@@ -31,7 +33,7 @@ function SectionHeading({ id, title, subtitle }: { id: string; title: string; su
 
 function TipCard({ number, title, children }: { number: string | number; title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-lavenderGrey bg-white p-6">
+    <div className="rounded-xl bg-lightGrey p-6">
       <div className="mb-3 flex items-start gap-4">
         <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue font-heading text-[13px] font-medium text-white">
           {number}
@@ -47,9 +49,9 @@ function TipCard({ number, title, children }: { number: string | number; title: 
 
 function FeatureCard({ emoji, title, children }: { emoji: string; title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-lavenderGrey bg-white p-6">
+    <div className="rounded-xl bg-lightGrey p-6">
       <div className="mb-3 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-lightGrey text-[18px]">
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-[18px]">
           {emoji}
         </div>
         <h3 className="font-heading text-[17px] font-medium text-navy">{title}</h3>
@@ -136,7 +138,19 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
           <p className="mt-4 max-w-xl font-body text-[16px] text-navy/60">
             How to build on-brand pages in Lovable effectively — from using the right terminology to writing prompts that get results first time.
           </p>
-          <div className="mt-6 flex flex-wrap gap-2">
+          <div className="mt-6 w-fit">
+            <a
+              href="https://docs.lovable.dev/tips-tricks/best-practice"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button
+                link={{ title: "Lovable official best practices", url: "" }}
+                button={{ background_color: "lightGrey", type: "slim" }}
+              />
+            </a>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
             {PAGE_SECTIONS.map(({ id, label }) => (
               <a
                 key={id}
@@ -188,32 +202,42 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
           </TipCard>
         </div>
 
-        {/* ════ CHATGPT WORKFLOW ══════════════════════════════════════════════ */}
+        {/* ════ LOVABLEGPT WORKFLOW ════════════════════════════════════════════ */}
         <SectionHeading
           id="chatgpt-workflow"
-          title="The ChatGPT-First Workflow"
-          subtitle="Lovable charges credits per generation. Use your enterprise ChatGPT licence to draft and refine prompts before committing — iteration there is free."
+          title="The LovableGPT Workflow"
+          subtitle="LovableGPT is a custom assistant built specifically for this brand kit. It already knows every component, color token, and prop — so you can describe what you want in plain English and get a Lovable-ready prompt back instantly."
         />
 
         <div className="pb-14 space-y-4">
           <div className="rounded-xl bg-lightGrey p-6">
-            <p className="mb-5 font-heading text-[17px] font-medium text-navy">The workflow in 3 steps</p>
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <p className="font-heading text-[17px] font-medium text-navy">The workflow in 3 steps</p>
+              <a
+                href="https://chatgpt.com/g/g-69fa0124fe308191a10e2b9311fe998f-lovable-prompt-assistant"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 rounded-full bg-blue px-3 py-1.5 font-body text-[12px] text-white transition-colors hover:bg-blue/85"
+              >
+                Open LovableGPT ↗
+              </a>
+            </div>
             <div className="space-y-5">
               {[
                 {
                   step: "1",
-                  title: "Draft in ChatGPT",
-                  desc: "Open ChatGPT and describe what you want to build — the page type, sections, content, and purpose. Don't worry about brand terms yet. Focus on getting the idea out clearly.",
+                  title: "Open LovableGPT",
+                  desc: "Find LovableGPT in the main nav of this site, or open it directly in ChatGPT. It's a purpose-built assistant pre-loaded with the full Genius Sports brand kit — components, color tokens, typography, and props.",
                 },
                 {
                   step: "2",
-                  title: "Refine with brand terms",
-                  desc: 'Ask ChatGPT: "Rewrite this as a specific Lovable prompt using the Genius Sports brand kit. Replace generic section names with the correct component names (TextMasthead, Section, GetStartedCTA, etc.) and replace color descriptions with color token names (navy, blue, brightGreen, etc.)."',
+                  title: "Describe what you want to build",
+                  desc: "Tell LovableGPT what you want — the page type, sections, content, and purpose — in plain English. No need to know the component names or brand terms; it will translate your description into a precise, brand-accurate Lovable prompt.",
                 },
                 {
                   step: "3",
                   title: "Paste into Lovable",
-                  desc: "Once the prompt is clear and specific, paste it into Lovable. A well-crafted prompt typically achieves the right result in fewer generations — saving significant credit spend.",
+                  desc: "Copy the prompt LovableGPT produces and paste it into Lovable. Because the prompt uses exact component names and color tokens, it typically achieves the right result in fewer generations — saving significant credit spend.",
                 },
               ].map(({ step, title, desc }) => (
                 <div key={step} className="flex gap-4">
@@ -230,11 +254,40 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
           </div>
 
           <div className="rounded-xl border border-orange/30 bg-orange/5 p-5">
-            <p className="font-heading text-[14px] font-medium text-navy">When to skip the ChatGPT step</p>
+            <p className="font-heading text-[14px] font-medium text-navy">When to skip LovableGPT</p>
             <p className="mt-1 font-body text-[13px] leading-relaxed text-navy/60">
-              For small, targeted changes — "change the Section background_color to lightGrey", "update the heading text to X" — you can prompt Lovable directly. The ChatGPT workflow pays off most for new pages, large sections, or complex multi-component builds.
+              For small, targeted changes — "change the Section background_color to lightGrey", "update the heading text to X" — you can prompt Lovable directly. LovableGPT pays off most for new pages, large sections, or complex multi-component builds where getting the structure right first time saves the most credits.
             </p>
           </div>
+        </div>
+
+        {/* ════ BEFORE YOU START ══════════════════════════════════════════════ */}
+        <SectionHeading
+          id="before-you-start"
+          title="Before You Start"
+          subtitle="A few minutes of planning dramatically improves the quality of what Lovable builds — and reduces the number of generations you need."
+        />
+
+        <div className="grid gap-4 pb-14 md:grid-cols-2">
+          <TipCard number="1" title="Answer four questions first">
+            <p>Before opening Lovable, define your build by answering: <strong>What is this page?</strong> <strong>Who is it for?</strong> <strong>Why will they use it?</strong> <strong>What's the one key action they should take?</strong></p>
+            <p>Vague ideas produce vague outputs. A clear brief gives Lovable a clear target.</p>
+          </TipCard>
+
+          <TipCard number="2" title="Sketch the user journey">
+            <p>Think about the sequence of sections, not just isolated layouts. A simple three-step structure — <strong>Hero → Features → CTA</strong> — is enough to plan most marketing pages.</p>
+            <p>Consider what builds trust, what gives confidence to act, and where the action leads. Then prompt Lovable section by section in that order.</p>
+          </TipCard>
+
+          <TipCard number="3" title="Lock in the visual style upfront">
+            <p>Establish the visual tone before you start: pick your primary background color, headline hierarchy, and overall feel — clean and premium, bold and energetic, data-driven and technical.</p>
+            <p>Embed style descriptors in your first prompt. It's much easier to set direction early than to retrofit a consistent aesthetic across an existing page.</p>
+          </TipCard>
+
+          <TipCard number="4" title="Ask Lovable to ask questions">
+            <p>At the end of your opening prompt, add: <em>"Ask me any questions you need to fully understand what I want from this feature and how I envision it."</em></p>
+            <p>Lovable responds with focused follow-ups that clarify requirements upfront — reducing back-and-forth iterations and producing a better first generation.</p>
+          </TipCard>
         </div>
 
         {/* ════ EFFICIENT PROMPTING ═══════════════════════════════════════════ */}
