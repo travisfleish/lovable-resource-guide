@@ -4,12 +4,12 @@ import MarketingCatalog from "./MarketingCatalog";
 import Glossary from "./Glossary";
 import BestPractices from "./BestPractices";
 import Section from "./components/layouts/Section";
-import TextMasthead from "./components/sections/TextMasthead";
+import { getSplitBreakText } from "./utils/text";
 import GetStartedCTA from "./components/sections/GetStartedCTA";
 import DotSubheading from "./components/sections/DotSubheading";
 import Button from "./components/elements/Button";
 import TextLink from "./components/elements/TextLink";
-import TextCard from "./components/elements/TextCard";
+import HighlightedText from "./components/elements/HighlightedText";
 import Logo from "./components/brand/Logo";
 import BrandIcon from "./components/brand/BrandIcon";
 import HintOverlay from "./components/demo/HintOverlay";
@@ -20,7 +20,6 @@ type PageType = "demo" | "catalog" | "brand-guide" | "glossary" | "best-practice
 export default function App() {
   const [page, setPage] = useState<PageType>("demo");
   const [scrolled, setScrolled] = useState(false);
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -43,7 +42,6 @@ export default function App() {
             { id: "brand-guide" as PageType, label: "Brand Guide" },
             { id: "glossary" as PageType, label: "Glossary" },
             { id: "best-practices" as PageType, label: "Best Practices" },
-            { id: "catalog" as PageType, label: "Catalog" },
           ]).map(({ id, label }) => (
             <button
               key={id}
@@ -53,12 +51,34 @@ export default function App() {
               {label}
             </button>
           ))}
+          <a
+            href="https://chatgpt.com/g/g-69fa0124fe308191a10e2b9311fe998f-lovable-prompt-assistant"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full px-4 py-2 font-heading text-[16px] font-normal text-white/80 transition-colors hover:text-white"
+          >
+            LovableGPT
+          </a>
+          <button
+            onClick={() => setPage("catalog")}
+            className="rounded-full px-4 py-2 font-heading text-[16px] font-normal text-white/80 transition-colors hover:text-white"
+          >
+            Catalog
+          </button>
         </nav>
         <Button
           link={{ title: "Get started", url: "#" }}
           button={{ background_color: "white15", type: "header" }}
         />
       </header>
+
+      {/* ── Disclaimer banner ────────────────────────────────────────────── */}
+        <div className="bg-blue/[0.08] px-6 py-3 lg:px-12 text-center">
+          <p className="font-body text-[13px] leading-snug text-navy/70">
+            <span className="font-medium text-navy">This is a sample page.</span>{" "}
+            Hover over any element to reveal a component badge, or click the <span className="font-medium text-navy">blue pills</span> in the top-right corner of each section to see the component name and a copy-ready Lovable prompt.
+          </p>
+        </div>
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <HintOverlay mode="section" hint={{
@@ -67,27 +87,79 @@ export default function App() {
         prompt: "Add a full-screen hero section with a dark navy background. Include a small label at the top with a green dot, a large two-line headline, a short paragraph, and a light grey button. Add decorative vertical lines on both sides of the content.",
       }}>
         <Section background={{ background_color: "navy" }} padding_top="huge" padding_bottom="huge" has_container inner_spacing="medium">
-          <TextMasthead
-            content={{
-              subheading: "Powering sport worldwide",
-              heading: "The data and technology<> behind modern sport",
-              content: "We connect sports federations, broadcasters, and betting operators with the official data, integrity services, and fan engagement tools they need to grow.",
-              links: [
-                {
-                  link: { title: "Get in touch", url: "#", target: "" },
-                  type: "button",
-                  button: { background_color: "lightGrey", type: "default" },
-                } as any,
-              ],
-            }}
-            options={{
-              alignment: "center",
-              text_size: "large",
-              subheading_colour: { colours: "brightGreen" },
-              add_springs: true,
-              spring_colour: { colours: "blue" },
-            }}
-          />
+          <div className="relative mx-auto max-w-[57.5rem]">
+            {/* Decorative springs */}
+            <HintOverlay
+              mode="element"
+              wrapperClassName="absolute inset-y-0 right-[90%] flex w-[80%] items-stretch justify-between md:right-[105%] lg:right-[110%]"
+              hint={{
+                component: "CustomLines",
+                description: "Decorative tapered spring lines made of 25 vertical bars that taper in width. Placed symmetrically on both sides of a content block for a bold, editorial feel.",
+                prompt: "Add decorative vertical spring lines on both sides of the hero content. Use blue bars that taper from thick to thin as they move away from the content.",
+              }}
+            >
+              {Array.from({ length: 25 }, (_, i) => i + 1).map((i) => (
+                <div key={i} className="h-full bg-blue" style={{ width: 12 - i * 0.5 }} />
+              ))}
+            </HintOverlay>
+            <HintOverlay
+              mode="element"
+              wrapperClassName="absolute inset-y-0 left-[90%] flex w-[80%] flex-row-reverse items-stretch justify-between md:left-[105%] lg:left-[110%]"
+              hint={{
+                component: "CustomLines",
+                description: "Decorative tapered spring lines made of 25 vertical bars that taper in width. Placed symmetrically on both sides of a content block for a bold, editorial feel.",
+                prompt: "Add decorative vertical spring lines on both sides of the hero content. Use blue bars that taper from thick to thin as they move away from the content.",
+              }}
+            >
+              {Array.from({ length: 25 }, (_, i) => i + 1).map((i) => (
+                <div key={i} className="h-full bg-blue" style={{ width: 12 - i * 0.5 }} />
+              ))}
+            </HintOverlay>
+
+            <div className="relative z-10 flex flex-col items-center gap-5 text-center">
+              <HintOverlay mode="element" inline hint={{
+                component: "DotSubheading",
+                description: "A small pill label with a coloured dot. Place above a heading to categorise or introduce the section. The dot colour is set independently from the background.",
+                prompt: "Add a small label above the hero heading that says 'Powering sport worldwide' with a green dot on the left.",
+              }}>
+                <DotSubheading subheading="Powering sport worldwide" colour="brightGreen" />
+              </HintOverlay>
+
+              <HintOverlay mode="element" hint={{
+                component: "Heading (h1)",
+                description: "The hero headline. Use <> in the string to insert a line break at md+. The is-large modifier applies the largest fluid type size.",
+                prompt: "Change the hero heading to read 'The data and technology behind modern sport', breaking to a new line after 'technology' on desktop.",
+              }}>
+                <h1
+                  className="is-large"
+                  dangerouslySetInnerHTML={{ __html: getSplitBreakText({ text: "The data and technology<> behind modern sport" }) }}
+                />
+              </HintOverlay>
+
+              <HintOverlay mode="element" hint={{
+                component: "Body Copy",
+                description: "A supporting paragraph below the hero heading. Uses font-body, opacity-80, and a fluid 22px size for hero contexts.",
+                prompt: "Update the hero body text to: 'We connect sports federations, broadcasters, and betting operators with the official data, integrity services, and fan engagement tools they need to grow.'",
+              }}>
+                <p className="font-body text-[22px] opacity-80">
+                  We connect sports federations, broadcasters, and betting operators with the official data, integrity services, and fan engagement tools they need to grow.
+                </p>
+              </HintOverlay>
+
+              <HintOverlay mode="element" inline hint={{
+                component: "Button",
+                description: "A pill-shaped CTA. The light-grey variant works well on dark backgrounds. Wrap in w-fit to prevent it from stretching to full container width.",
+                prompt: "Add a light grey pill button labelled 'Get in touch' below the hero body text.",
+              }}>
+                <div className="w-fit">
+                  <Button
+                    link={{ title: "Get in touch", url: "#" }}
+                    button={{ background_color: "lightGrey", type: "default" }}
+                  />
+                </div>
+              </HintOverlay>
+            </div>
+          </div>
         </Section>
       </HintOverlay>
 
@@ -169,14 +241,41 @@ export default function App() {
                 prompt: `Add a rounded light grey card with a brand icon at the top, a title that reads "${heading}", a short description, and a 'Learn more' link at the bottom.`,
               }}>
                 <div className="group rounded-2xl bg-lightGrey p-8 transition-shadow hover:shadow-lg">
-                  <div className="mb-5">
-                    <BrandIcon name={icon} mode="light" size={40} />
-                  </div>
-                  <h3 className="mb-3 text-h7">{heading}</h3>
-                  <p className="font-body text-[16px] leading-relaxed text-navy/70">{content}</p>
-                  <div className="mt-6">
-                    <TextLink link={{ title: "Learn more", url: "#" }} text_link={{ background_color: "navy" }} />
-                  </div>
+                  <HintOverlay mode="element" inline hint={{
+                    component: "BrandIcon",
+                    description: "One of 25 brand icons served as PNGs. Use mode='light' (navy) on light backgrounds and mode='dark' (white) on dark backgrounds. Size is set in pixels.",
+                    prompt: `Add a brand icon using the "${icon}" icon at 40px, in light mode (navy colour), above the card title.`,
+                  }}>
+                    <div className="mb-5">
+                      <BrandIcon name={icon} mode="light" size={40} />
+                    </div>
+                  </HintOverlay>
+
+                  <HintOverlay mode="element" hint={{
+                    component: "Card Title (h3)",
+                    description: "A small heading inside a card. Uses the text-h7 utility for a consistent size across all cards.",
+                    prompt: `Change the card title to "${heading}".`,
+                  }}>
+                    <h3 className="mb-3 text-h7">{heading}</h3>
+                  </HintOverlay>
+
+                  <HintOverlay mode="element" hint={{
+                    component: "Body Copy",
+                    description: "Supporting description text inside a card. Uses font-body at 16px with relaxed line-height and reduced opacity for a secondary visual weight.",
+                    prompt: `Set the card body text to: "${content}"`,
+                  }}>
+                    <p className="font-body text-[16px] leading-relaxed text-navy/70">{content}</p>
+                  </HintOverlay>
+
+                  <HintOverlay mode="element" inline hint={{
+                    component: "TextLink",
+                    description: "An arrow-circle icon followed by a text label. Used for secondary navigation inside cards and content blocks.",
+                    prompt: "Add a 'Learn more' text link at the bottom of the card.",
+                  }}>
+                    <div className="mt-6">
+                      <TextLink link={{ title: "Learn more", url: "#" }} text_link={{ background_color: "navy" }} />
+                    </div>
+                  </HintOverlay>
                 </div>
               </HintOverlay>
             ))}
@@ -192,28 +291,63 @@ export default function App() {
       }}>
         <Section background={{ background_color: "navy" }} padding_top="large" padding_bottom="large" has_container>
           <div className="grid items-center gap-12 lg:grid-cols-2">
-            <TextCard
-              text_card={{
-                subheading: "Trusted by the best",
-                heading: "Powering the world's biggest sports |properties|",
-                content: "From Premier League to the NFL, our technology sits at the heart of sport's data infrastructure — delivering official feeds that operators and broadcasters depend on.",
-                links: [
-                  {
-                    link: { title: "See our partners", url: "#", target: "" },
-                    type: "button",
-                    button: { background_color: "white", type: "default" },
-                  } as any,
-                ],
-                options: {
-                  heading_tag: "h2",
-                  heading_highlighted_color: "brightGreen",
-                  text_alignment: "left",
-                },
-              }}
-            />
-            <div className="flex aspect-video items-center justify-center rounded-2xl bg-blue/20">
-              <span className="font-body text-[14px] text-white/40">[ Replace with image or animation ]</span>
+            <div className="flex flex-col items-start space-y-4 md:space-y-5">
+              <HintOverlay mode="element" hint={{
+                component: "Subheading",
+                description: "A small secondary label above the main heading. Uses font-heading at 15px with reduced opacity to sit quietly above the headline.",
+                prompt: "Add a small subheading above the section heading that reads 'Trusted by the best'.",
+              }}>
+                <h6 className="w-full font-heading text-[15px] tracking-[0.011em] opacity-80">
+                  Trusted by the best
+                </h6>
+              </HintOverlay>
+
+              <HintOverlay mode="element" hint={{
+                component: "HighlightedText",
+                description: "A heading where specific words are coloured. Wrap any word in |pipes| in the string and pass a brand colour token — the component swaps them for a coloured span.",
+                prompt: "Change the heading to 'Powering the world's biggest sports |properties|' and highlight 'properties' in bright green.",
+              }}>
+                <HighlightedText
+                  tag="h2"
+                  content="Powering the world's biggest sports |properties|"
+                  color="brightGreen"
+                  className="w-full"
+                />
+              </HintOverlay>
+
+              <HintOverlay mode="element" hint={{
+                component: "Body Copy",
+                description: "Supporting paragraph text. Uses font-body at 18px with opacity-80 for a secondary visual weight that complements the heading.",
+                prompt: "Set the body text to: 'From Premier League to the NFL, our technology sits at the heart of sport's data infrastructure — delivering official feeds that operators and broadcasters depend on.'",
+              }}>
+                <p className="w-full font-body text-[18px] opacity-80">
+                  From Premier League to the NFL, our technology sits at the heart of sport's data infrastructure — delivering official feeds that operators and broadcasters depend on.
+                </p>
+              </HintOverlay>
+
+              <HintOverlay mode="element" inline hint={{
+                component: "Button",
+                description: "A pill-shaped CTA. The white variant stands out on dark navy backgrounds. Wrap in w-fit to prevent it stretching to full container width.",
+                prompt: "Add a white pill button labelled 'See our partners' below the body text.",
+              }}>
+                <div className="w-fit pt-2">
+                  <Button
+                    link={{ title: "See our partners", url: "#" }}
+                    button={{ background_color: "white", type: "default" }}
+                  />
+                </div>
+              </HintOverlay>
             </div>
+
+            <HintOverlay mode="element" hint={{
+              component: "Media Placeholder",
+              description: "A placeholder for an image, video, or animation. Uses aspect-video to maintain a 16:9 ratio. Replace the div with an <img> or embed when content is ready.",
+              prompt: "Replace the right-column placeholder with a full-width image or video. Use rounded-2xl to match the card corner radius.",
+            }}>
+              <div className="flex aspect-video items-center justify-center rounded-2xl bg-blue/20">
+                <span className="font-body text-[14px] text-white/40">[ Replace with image or animation ]</span>
+              </div>
+            </HintOverlay>
           </div>
         </Section>
       </HintOverlay>
@@ -236,7 +370,7 @@ export default function App() {
       {/* ── Footer ───────────────────────────────────────────────────────── */}
       <footer className="border-t border-lavenderGrey bg-navy px-6 py-12 lg:px-12">
         <div className="container mx-auto flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-          <Logo variant="horizontal" color="white" className="h-6 w-auto" />
+          <Logo variant="horizontal" color="white" className="h-20 w-auto" />
           <span className="font-body text-[13px] text-white/30">
             © {new Date().getFullYear()} Genius Sports Group. All rights reserved.
           </span>

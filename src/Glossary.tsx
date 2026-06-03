@@ -390,7 +390,7 @@ export default function Glossary({ onNavigate }: { onNavigate: (page: PageType) 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
       <footer className="border-t border-lavenderGrey px-6 py-10 lg:px-12">
         <div className="container mx-auto flex items-center justify-between">
-          <Logo variant="horizontal" color="blue" className="h-6 w-auto" />
+          <Logo variant="horizontal" color="blue" className="h-20 w-auto" />
           <span className="font-body text-[12px] text-navy/30">GS Web Design Glossary — internal use only</span>
         </div>
       </footer>

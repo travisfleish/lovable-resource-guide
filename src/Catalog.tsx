@@ -488,7 +488,7 @@ ease: [0.68, -0.2, 0.15, 0.98]`}</Code>
               <TextLink link={{ title: "See our partners", url: "#" }} text_link={{ background_color: "navy" }} />
             </div>
             <div className="flex flex-col gap-4 rounded-2xl bg-navy p-8">
-              <Label>background_color: "white" — on dark</Label>
+              <p className="mb-2 font-body text-[11px] uppercase tracking-[0.1em] text-white/40">background_color: "white" — on dark</p>
               <TextLink link={{ title: "Learn more", url: "#" }} text_link={{ background_color: "white" }} />
               <TextLink link={{ title: "See our partners", url: "#" }} text_link={{ background_color: "white" }} />
             </div>
@@ -566,13 +566,13 @@ ease: [0.68, -0.2, 0.15, 0.98]`}</Code>
           <div className="mt-8 space-y-6 rounded-2xl border border-lavenderGrey p-8">
             <div>
               <Label>color: brightGreen — on navy</Label>
-              <div className="rounded-xl bg-navy px-6 py-4">
+              <div className="rounded-xl bg-navy px-6 py-4 text-white">
                 <HighlightedText tag="h2" content="The data behind |modern sport|" color="brightGreen" />
               </div>
             </div>
             <div>
               <Label>color: lightBlue — on navy</Label>
-              <div className="rounded-xl bg-navy px-6 py-4">
+              <div className="rounded-xl bg-navy px-6 py-4 text-white">
                 <HighlightedText tag="h2" content="Powering the world's |biggest| sports |properties|" color="lightBlue" />
               </div>
             </div>
@@ -631,7 +631,7 @@ ease: [0.68, -0.2, 0.15, 0.98]`}</Code>
           <div className="mt-8 space-y-6">
             <div>
               <Label>alignment: "center", text_size: "large", springs on navy</Label>
-              <div className="overflow-hidden rounded-2xl bg-navy px-6 py-16">
+              <div className="overflow-hidden rounded-2xl bg-navy px-6 py-16 text-white">
                 <TextMasthead
                   content={{
                     subheading: "Powering sport worldwide",
@@ -639,7 +639,7 @@ ease: [0.68, -0.2, 0.15, 0.98]`}</Code>
                     content: "We connect sports federations, broadcasters, and betting operators with official data, integrity services, and fan engagement tools.",
                     links: [
                       { link: { title: "Explore our platform", url: "#", target: "" }, type: "button", button: { background_color: "white", type: "default" } } as any,
-                      { link: { title: "Talk to sales", url: "#", target: "" }, type: "text", text_link: { background_color: "navy" } } as any,
+                      { link: { title: "Talk to sales", url: "#", target: "" }, type: "text", text_link: { background_color: "white" } } as any,
                     ],
                   }}
                   options={{
@@ -713,7 +713,7 @@ ease: [0.68, -0.2, 0.15, 0.98]`}</Code>
           <div className="mt-8 space-y-6">
             <div>
               <Label>left-aligned — on navy</Label>
-              <div className="rounded-2xl bg-navy p-10">
+              <div className="rounded-2xl bg-navy p-10 text-white">
                 <TextCard
                   text_card={{
                     subheading: "Trusted by the best",
@@ -935,7 +935,7 @@ ease: [0.68, -0.2, 0.15, 0.98]`}</Code>
                   centered
                   links={[
                     { link: { title: "Explore our platform", url: "#", target: "" }, type: "button", button: { background_color: "white", type: "default" } } as any,
-                    { link: { title: "Talk to sales", url: "#", target: "" }, type: "text", text_link: { background_color: "navy" } } as any,
+                    { link: { title: "Talk to sales", url: "#", target: "" }, type: "text", text_link: { background_color: "white" } } as any,
                   ]}
                 />
               </div>
@@ -1350,7 +1350,7 @@ getLinkTarget("")        // → "_self"`}</Code>
       {/* ── Footer ──────────────────────────────────────────────────────── */}
       <footer className="mt-16 border-t border-lavenderGrey px-6 py-10 lg:px-12">
         <div className="container mx-auto flex items-center justify-between">
-          <Logo variant="horizontal" color="blue" className="h-6 w-auto" />
+          <Logo variant="horizontal" color="blue" className="h-20 w-auto" />
           <span className="font-body text-[12px] text-navy/30">GS Brand Catalog — internal use only</span>
         </div>
       </footer>

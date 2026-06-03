@@ -85,19 +85,23 @@ export default function HintOverlay({
   hint,
   mode = "element",
   inline = false,
+  wrapperClassName,
 }: {
   children: React.ReactNode;
   hint: HintData;
   mode?: HintMode;
   inline?: boolean;
+  wrapperClassName?: string;
 }) {
   const [hovered, setHovered] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const baseClass = wrapperClassName ?? `relative ${inline ? "inline-block" : ""}`;
+
   return (
     <>
       <div
-        className={`relative ${inline ? "inline-block" : ""}`}
+        className={baseClass}
         onMouseEnter={() => mode === "element" && setHovered(true)}
         onMouseLeave={() => mode === "element" && setHovered(false)}
       >
