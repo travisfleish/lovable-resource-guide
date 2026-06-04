@@ -109,7 +109,7 @@ export default function App() {
             {
               step: "02",
               heading: "Remix the GS Brand Template",
-              body: "Find the Genius Sports GS Brand Template project and click Remix to create your own editable copy.",
+              body: "Find the GS Brand Template project and click Remix to create your own editable copy.",
               cta: null,
               showRemixDemo: true,
             },
