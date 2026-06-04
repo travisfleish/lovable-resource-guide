@@ -5,6 +5,8 @@ import TextLink from "./components/elements/TextLink";
 import PillTag from "./components/elements/PillTag";
 import HighlightedText from "./components/elements/HighlightedText";
 import TextCard from "./components/elements/TextCard";
+import LineBlock from "./components/elements/LineBlock";
+import StatBlock from "./components/elements/StatBlock";
 import DotSubheading from "./components/sections/DotSubheading";
 import TextMasthead from "./components/sections/TextMasthead";
 import Logo from "./components/brand/Logo";
@@ -110,6 +112,8 @@ const SECTIONS = [
   { id: "backgrounds", label: "Backgrounds" },
   { id: "labels",      label: "Labels" },
   { id: "highlights",  label: "Highlighted Text" },
+  { id: "line-block",  label: "Line Block" },
+  { id: "stat-block",  label: "Stat Block" },
   { id: "hero",        label: "Hero Section" },
   { id: "content",     label: "Content Blocks" },
   { id: "tags",        label: "Tags" },
@@ -128,7 +132,14 @@ const CROSS_NAV: { id: PageType; label: string }[] = [
   { id: "catalog", label: "Catalog" },
 ];
 
-export default function MarketingCatalog({ onNavigate }: { onNavigate: (page: PageType) => void }) {
+export default function MarketingCatalog({ onNavigate, initialAnchor }: { onNavigate: (page: PageType) => void; initialAnchor?: string }) {
+  useEffect(() => {
+    if (initialAnchor) {
+      requestAnimationFrame(() => {
+        document.getElementById(initialAnchor)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  }, [initialAnchor]);
   const [activeSection, setActiveSection] = useState("colors");
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -245,22 +256,51 @@ export default function MarketingCatalog({ onNavigate }: { onNavigate: (page: Pa
           <section id="colors" className="mb-20 scroll-mt-28">
             <SectionHeader
               title="Colors"
-              description="The full Genius Sports color palette. Every color has a name — use that name when asking Lovable to apply it anywhere."
+              description="The GS palette has a clear hierarchy: four core brand colors lead all decisions, with an extended set available for accents and UI."
             />
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-              {(Object.entries(colors) as [string, string][]).map(([name, hex]) => {
-                const isDark = ["navy", "blue", "green", "purple", "red", "black"].includes(name);
+
+            {/* Tier 1 — Core brand colors */}
+            <p className="mb-3 font-body text-[11px] font-medium uppercase tracking-[0.1em] text-navy/40">Core brand colors</p>
+            <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {[
+                { name: "blue",       label: "GS Blue",         note: "Primary brand color" },
+                { name: "navy",       label: "GS Navy",         note: "Dark base" },
+                { name: "brightGreen",label: "Bright Green",    note: "Accent / energy" },
+                { name: "lightBlue",  label: "Light Blue",      note: "Secondary accent" },
+              ].map(({ name, label, note }) => {
+                const hex = (colors as Record<string, string>)[name];
+                const isDark = ["navy", "blue"].includes(name);
                 return (
                   <div key={name} className="overflow-hidden rounded-2xl border border-lavenderGrey">
-                    <div className="h-20" style={{ backgroundColor: hex }} />
+                    <div className="flex h-28 items-end px-4 pb-3" style={{ backgroundColor: hex }}>
+                      <p className={`font-heading text-[15px] font-medium ${isDark ? "text-white" : "text-navy"}`}>{label}</p>
+                    </div>
                     <div className="px-3 py-2.5">
-                      <p className="font-heading text-[14px] font-medium text-navy">{name}</p>
-                      <p className="font-mono text-[11px] text-navy/40">{hex}</p>
+                      <p className="font-mono text-[10px] text-navy/40">{hex}</p>
+                      <p className="font-body text-[11px] text-navy/40">{note}</p>
                     </div>
                   </div>
                 );
               })}
             </div>
+
+            {/* Tier 2 — Full palette */}
+            <p className="mb-3 font-body text-[11px] font-medium uppercase tracking-[0.1em] text-navy/40">Full palette</p>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+              {(Object.entries(colors) as [string, string][]).map(([name, hex]) => {
+                const isDark = ["navy", "blue", "green", "purple", "red", "black"].includes(name);
+                return (
+                  <div key={name} className="overflow-hidden rounded-xl border border-lavenderGrey">
+                    <div className="h-12" style={{ backgroundColor: hex }} />
+                    <div className="px-2 py-1.5">
+                      <p className="font-heading text-[11px] font-medium text-navy">{name}</p>
+                      <p className="font-mono text-[9px] text-navy/35">{hex}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
             <PromptBox
               prompt={{
                 descriptive: "Change the hero section background to a deep dark navy blue, with all text in white.",
@@ -579,6 +619,156 @@ export default function MarketingCatalog({ onNavigate }: { onNavigate: (page: Pa
               >
                 <HighlightedText tag="h2" content="Driving |fan engagement| worldwide" color="orange" />
               </ExampleBlock>
+            </div>
+          </section>
+
+          {/* ══════════════════════════════════════════════════════════════ */}
+          {/* LINE BLOCK                                                     */}
+          {/* ══════════════════════════════════════════════════════════════ */}
+          <section id="line-block" className="mb-20 scroll-mt-28">
+            <SectionHeader
+              title="Line Block"
+              description="The core graphic asset of the GS visual language. A rectangle of parallel lines graduating from thin to thick — always aligned to the 45° angle of the G logo. By default lines extend freely beyond the component bounds so they bleed across layouts. Add clip={true} or wrap in overflow-hidden when you need a hard-edged standalone block."
+            />
+            <div className="space-y-6">
+
+              <ExampleBlock
+                label="Background decoration — lines bleed freely beyond the component boundary (default, no clip)"
+                dark
+                prompt={{
+                  descriptive: "Add diagonal bright green lines in the top-right corner of the hero section that bleed off the edge. The lines should extend freely — not be boxed in.",
+                  specific: "Add a LineBlock with color 'brightGreen', steps 20, rotation 45 inside an absolute-positioned div in the top-right of the section. No clip needed — the section boundary handles it.",
+                }}
+              >
+                {/* Outer div = the "section". Its overflow-hidden is the only clip. */}
+                <div className="relative h-48 overflow-hidden">
+                  {/* Dashed box = where the LineBlock div lives. Lines extend beyond it. */}
+                  <div className="absolute right-8 top-4 h-32 w-32 border border-dashed border-white/30">
+                    <LineBlock color="brightGreen" steps={20} rotation={45} className="h-full w-full" />
+                  </div>
+                  <div className="absolute left-8 top-1/2 -translate-y-1/2 max-w-[180px]">
+                    <p className="font-heading text-[18px] text-white leading-snug">Lines extend past the dashed boundary</p>
+                    <p className="font-body text-[12px] text-white/40 mt-2">The dashed box is the LineBlock div. The section clips at its own edge.</p>
+                  </div>
+                </div>
+              </ExampleBlock>
+
+              <ExampleBlock
+                label="Standalone block — hard-edged rectangle (clip={true})"
+                dark
+                prompt={{
+                  descriptive: "Add a rectangular block of parallel vertical lines in brand blue as a standalone decorative element. The lines should be clipped to the rectangle.",
+                  specific: "Add a LineBlock with color 'blue', steps 20, clip={true}, and a fixed height of around 160px.",
+                }}
+              >
+                <LineBlock color="blue" steps={20} clip={true} className="h-40 w-full" />
+              </ExampleBlock>
+
+              <div>
+                <p className="mb-3 font-body text-[12px] font-medium uppercase tracking-[0.08em] text-navy/60">Step counts — controls density</p>
+                <div className="grid gap-4 md:grid-cols-3">
+                  {([14, 20, 30] as const).map((s) => (
+                    <div key={s}>
+                      <p className="mb-2 font-mono text-[11px] text-navy/40">{s} steps</p>
+                      <div className="overflow-hidden rounded-2xl border border-lavenderGrey">
+                        <LineBlock color="blue" steps={s} className="h-32 w-full" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-3 font-body text-[12px] font-medium uppercase tracking-[0.08em] text-navy/60">Color variants — all brand colors work</p>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {[
+                    { color: "blue",        bg: "navy" },
+                    { color: "brightGreen", bg: "navy" },
+                    { color: "lightBlue",   bg: "navy" },
+                    { color: "lightGreen",  bg: "navy" },
+                    { color: "lightPurple", bg: "navy" },
+                    { color: "orange",      bg: "navy" },
+                    { color: "lightRed",    bg: "navy" },
+                    { color: "white",       bg: "blue" },
+                  ].map(({ color, bg }) => (
+                    <div key={color}>
+                      <p className="mb-1.5 font-mono text-[10px] text-navy/40">{color}</p>
+                      <div
+                        className="overflow-hidden rounded-xl"
+                        style={{ backgroundColor: (colors as Record<string, string>)[bg] }}
+                      >
+                        <LineBlock color={color} steps={20} rotation={45} className="h-24 w-full" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+            <PromptBox
+              prompt={{
+                descriptive: "Add a decorative line graphic in the top-right corner of the hero section — parallel lines rotated 45 degrees bleeding off the edge, in bright green.",
+                specific: "Add a LineBlock with color 'brightGreen', steps 20, and rotation 45 inside an absolute-positioned div in the corner of the section. Lines extend freely by default — the section's own boundary clips them.",
+              }}
+            />
+          </section>
+
+          {/* ══════════════════════════════════════════════════════════════ */}
+          {/* STAT BLOCK                                                     */}
+          {/* ══════════════════════════════════════════════════════════════ */}
+          <section id="stat-block" className="mb-20 scroll-mt-28">
+            <SectionHeader
+              title="Stat Block"
+              description="A large headline number with a short descriptor. Use in rows of 3–4 to showcase key metrics. Available plain (border only) or with a brand color background."
+            />
+            <div className="space-y-6">
+
+              <ExampleBlock
+                label="Plain stat blocks — for light section backgrounds"
+                prompt={{
+                  descriptive: "Add a row of four key statistics, each with a large number and a short description below a blue divider line. Use plain white cards with a border.",
+                  specific: "Add four StatBlock components in a grid: value '3B+' label 'data events processed daily', value '150+' label 'sports federations partnered', value '47%' label 'increase in fan engagement', value '95%' label 'live match uptime guaranteed'.",
+                }}
+              >
+                <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                  <StatBlock value="3B+" label="data events processed daily" />
+                  <StatBlock value="150+" label="sports federations partnered" />
+                  <StatBlock value="47%" label="increase in fan engagement" />
+                  <StatBlock value="95%" label="live match uptime guaranteed" />
+                </div>
+              </ExampleBlock>
+
+              <ExampleBlock
+                label="Colored backgrounds — brand accent colors"
+                prompt={{
+                  descriptive: "Add a row of stat blocks with brand color backgrounds — use blue, navy, bright green, and light blue.",
+                  specific: "Add four StatBlock components with backgrounds: 'blue', 'navy', 'brightGreen', 'lightBlue'. Each with a relevant value and label.",
+                }}
+              >
+                <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                  <StatBlock value="3B+"  background="blue"        label="data events processed daily" />
+                  <StatBlock value="150+" background="navy"        label="sports federations partnered" />
+                  <StatBlock value="47%"  background="brightGreen" label="increase in fan engagement" />
+                  <StatBlock value="95%"  background="lightBlue"   label="live match uptime guaranteed" />
+                </div>
+              </ExampleBlock>
+
+              <ExampleBlock
+                label="On a dark background — bright accent lines"
+                dark
+                prompt={{
+                  descriptive: "Add a row of stats on a dark navy background. Each stat card should have no background fill — just the number, a bright green divider, and white label text.",
+                  specific: "Add StatBlock components inside a navy Section. The StatBlock automatically uses white text and a brightGreen divider line when no background prop is set.",
+                }}
+              >
+                <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                  <StatBlock dark value="3B+"  label="data events daily" />
+                  <StatBlock dark value="150+" label="sports federations" />
+                  <StatBlock dark value="47%"  label="fan engagement lift" />
+                  <StatBlock dark value="95%"  label="match uptime" />
+                </div>
+              </ExampleBlock>
+
             </div>
           </section>
 

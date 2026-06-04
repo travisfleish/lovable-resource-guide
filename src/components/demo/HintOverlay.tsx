@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, createContext } from "react";
 
 export type HintData = {
   component: string;
@@ -8,6 +8,67 @@ export type HintData = {
 
 type HintMode = "section" | "element";
 
+type PageType = "demo" | "catalog" | "brand-guide" | "glossary" | "best-practices";
+export type NavigateFn = (page: PageType, anchor?: string) => void;
+export const HintNavContext = createContext<NavigateFn | null>(null);
+
+const CATALOG_ID: Record<string, string> = {
+  TextMasthead: "textmasthead",
+  CustomLines: "customlines",
+  DotSubheading: "dotsubheading",
+  Button: "buttons",
+  TextLink: "textlink",
+  BrandIcon: "brandicons",
+  HighlightedText: "highlighted",
+  GetStartedCTA: "getstarted",
+  TextCard: "textcard",
+  Section: "section",
+  Logo: "logos",
+  PillTag: "pilltag",
+  Link: "link",
+  LinkGroup: "linkgroup",
+  "Heading (h1)": "typography",
+  "Body Copy": "typography",
+  "Section Heading (h2)": "typography",
+  "Card Title (h3)": "typography",
+  Subheading: "typography",
+  Stat: "typography",
+};
+
+const BRAND_GUIDE_ID: Record<string, string> = {
+  TextMasthead: "hero",
+  CustomLines: "hero",
+  GetStartedCTA: "hero",
+  DotSubheading: "labels",
+  Button: "buttons",
+  TextLink: "text-links",
+  Link: "text-links",
+  LinkGroup: "text-links",
+  BrandIcon: "icons",
+  HighlightedText: "highlights",
+  TextCard: "content",
+  "Feature Card": "content",
+  "Feature Card Grid": "content",
+  Section: "backgrounds",
+  Logo: "logo",
+  PillTag: "tags",
+  "Heading (h1)": "headings",
+  "Section Heading (h2)": "headings",
+  "Card Title (h3)": "headings",
+  Subheading: "headings",
+  Stat: "headings",
+  "Stats Row": "headings",
+  "Body Copy": "body-text",
+};
+
+function NavArrow() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="ml-0.5 shrink-0">
+      <path d="M2 6h8M6.5 2.5L10 6l-3.5 3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function HintModal({
   hint,
   onClose,
@@ -16,12 +77,16 @@ function HintModal({
   onClose: () => void;
 }) {
   const [copied, setCopied] = useState(false);
+  const navigate = useContext(HintNavContext);
 
   function copy() {
     navigator.clipboard.writeText(hint.prompt);
     setCopied(true);
     setTimeout(() => setCopied(false), 1600);
   }
+
+  const catalogId = CATALOG_ID[hint.component];
+  const brandGuideId = BRAND_GUIDE_ID[hint.component];
 
   return (
     <div
@@ -75,6 +140,23 @@ function HintModal({
             <p className="font-body text-[14px] leading-relaxed text-navy/70">{hint.prompt}</p>
           </button>
         </div>
+
+        {navigate && (
+          <div className="flex items-center gap-3 border-t border-lavenderGrey px-6 py-4">
+            <button
+              onClick={() => { navigate("brand-guide", brandGuideId); onClose(); }}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-lavenderGrey bg-lightGrey px-4 py-2.5 font-body text-[13px] font-medium text-navy transition-colors hover:border-navy/20 hover:bg-navy hover:text-white"
+            >
+              Brand Guide <NavArrow />
+            </button>
+            <button
+              onClick={() => { navigate("catalog", catalogId); onClose(); }}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-blue px-4 py-2.5 font-body text-[13px] font-medium text-white transition-colors hover:bg-navy"
+            >
+              View in Catalog <NavArrow />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

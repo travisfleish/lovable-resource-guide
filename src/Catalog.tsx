@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { colors, spacing } from "./tokens/tokens";
 import Button from "./components/elements/Button";
 import TextLink from "./components/elements/TextLink";
@@ -117,7 +117,15 @@ const CROSS_NAV: { id: PageType; label: string }[] = [
   { id: "catalog", label: "Catalog" },
 ];
 
-export default function Catalog({ onNavigate }: { onNavigate: (page: PageType) => void }) {
+export default function Catalog({ onNavigate, initialAnchor }: { onNavigate: (page: PageType) => void; initialAnchor?: string }) {
+  useEffect(() => {
+    if (initialAnchor) {
+      requestAnimationFrame(() => {
+        document.getElementById(initialAnchor)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  }, [initialAnchor]);
+
   return (
     <div className="min-h-screen bg-white text-navy">
 

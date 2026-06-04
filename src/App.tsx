@@ -12,26 +12,42 @@ import TextLink from "./components/elements/TextLink";
 import HighlightedText from "./components/elements/HighlightedText";
 import Logo from "./components/brand/Logo";
 import BrandIcon from "./components/brand/BrandIcon";
-import HintOverlay from "./components/demo/HintOverlay";
+import HintOverlay, { HintNavContext } from "./components/demo/HintOverlay";
 
 // ─── App ─────────────────────────────────────────────────────────────────────
 type PageType = "demo" | "catalog" | "brand-guide" | "glossary" | "best-practices";
 
 export default function App() {
   const [page, setPage] = useState<PageType>("demo");
+  const [catalogAnchor, setCatalogAnchor] = useState<string | undefined>();
+  const [brandGuideAnchor, setBrandGuideAnchor] = useState<string | undefined>();
   const [scrolled, setScrolled] = useState(false);
+  const [remixModalOpen, setRemixModalOpen] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  useEffect(() => {
+    if (!remixModalOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setRemixModalOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [remixModalOpen]);
 
-  if (page === "catalog") return <Catalog onNavigate={setPage} />;
-  if (page === "brand-guide") return <MarketingCatalog onNavigate={setPage} />;
+  function navigate(p: PageType, anchor?: string) {
+    setPage(p);
+    setCatalogAnchor(p === "catalog" ? anchor : undefined);
+    setBrandGuideAnchor(p === "brand-guide" ? anchor : undefined);
+  }
+
+  if (page === "catalog") return <Catalog onNavigate={setPage} initialAnchor={catalogAnchor} />;
+  if (page === "brand-guide") return <MarketingCatalog onNavigate={setPage} initialAnchor={brandGuideAnchor} />;
   if (page === "glossary") return <Glossary onNavigate={setPage} />;
   if (page === "best-practices") return <BestPractices onNavigate={setPage} />;
 
   return (
+    <HintNavContext.Provider value={navigate}>
     <div className="min-h-screen bg-white text-navy">
 
       {/* ── Nav ─────────────────────────────────────────────────────────── */}
@@ -67,16 +83,106 @@ export default function App() {
           </button>
         </nav>
         <Button
-          link={{ title: "Get started", url: "#" }}
+          link={{ title: "Get started", url: "#get-started" }}
           button={{ background_color: "white15", type: "header" }}
         />
       </header>
 
+      {/* ── Get Started ─────────────────────────────────────────────────── */}
+      <Section id="get-started" background={{ background_color: "navy" }} padding_top="large" padding_bottom="large" has_container inner_spacing="large">
+        <div className="text-center">
+          <DotSubheading subheading="Genius Sports × Lovable" colour="brightGreen" />
+          <h1 className="mt-4 mx-auto max-w-3xl">Get started with Lovable</h1>
+          <p className="mt-4 font-body text-[18px] opacity-70 max-w-xl mx-auto">
+            Three simple steps to launch Genius-branded web applications.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3 mt-2">
+          {[
+            {
+              step: "01",
+              heading: "Log in with your Genius email",
+              body: "Go to lovable.dev and sign in using your Genius Sports email address to access the enterprise account.",
+              cta: { label: "Open Lovable", url: "https://lovable.dev" },
+            },
+            {
+              step: "02",
+              heading: "Remix the GS Brand Template",
+              body: "Find the Genius Sports GS Brand Template project and click Remix to create your own editable copy.",
+              cta: null,
+              showRemixDemo: true,
+            },
+            {
+              step: "03",
+              heading: "Prompt with LovableGPT",
+              body: "Open LovableGPT, browse the Brand Guide for component examples, then paste the ready-made prompts directly into your Lovable project.",
+              cta: { label: "Open LovableGPT", url: "https://chatgpt.com/g/g-69fa0124fe308191a10e2b9311fe998f-lovable-prompt-assistant" },
+            },
+          ].map(({ step, heading, body, cta, ...rest }) => (
+            <div key={step} className="flex flex-col rounded-2xl bg-white/[0.06] p-8 border border-white/10">
+              <span className="font-heading text-[48px] font-light leading-none tracking-[-0.04em] text-blue mb-5">{step}</span>
+              <h3 className="text-h7 text-white mb-3">{heading}</h3>
+              <p className="font-body text-[15px] leading-relaxed text-white/60 flex-1">{body}</p>
+              {"showRemixDemo" in rest && (
+                <div className="mt-6 w-fit">
+                  <button
+                    onClick={() => setRemixModalOpen(true)}
+                    className="font-heading text-[14px] text-white/70 underline underline-offset-4 hover:text-white transition-colors"
+                  >
+                    Watch demo →
+                  </button>
+                </div>
+              )}
+              {cta && (
+                <div className="mt-6 w-fit">
+                  <a
+                    href={cta.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-heading text-[14px] text-white/70 underline underline-offset-4 hover:text-white transition-colors"
+                  >
+                    {cta.label} →
+                  </a>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── Remix demo modal ─────────────────────────────────────────────── */}
+      {remixModalOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-navy/80 backdrop-blur-sm p-4"
+          onClick={() => setRemixModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-4xl rounded-2xl overflow-hidden bg-black shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setRemixModalOpen(false)}
+              className="absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 font-heading text-[14px] text-white hover:bg-white/20 transition-colors"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            <video
+              src="/remix_example.webm"
+              autoPlay
+              controls
+              playsInline
+              className="w-full"
+            />
+          </div>
+        </div>
+      )}
+
       {/* ── Disclaimer banner ────────────────────────────────────────────── */}
-        <div className="bg-blue/[0.08] px-6 py-3 lg:px-12 text-center">
-          <p className="font-body text-[13px] leading-snug text-navy/70">
-            <span className="font-medium text-navy">This is a sample page.</span>{" "}
-            Hover over any element to reveal a component badge, or click the <span className="font-medium text-navy">blue pills</span> in the top-right corner of each section to see the component name and a copy-ready Lovable prompt.
+        <div className="bg-blue/[0.10] border-y border-blue/20 px-6 py-6 lg:px-12 text-center">
+          <p className="font-body text-[16px] leading-normal text-navy/80">
+            <span className="font-semibold text-navy">Sample page</span> — hover any element to reveal its component badge, or click a <span className="font-semibold text-navy">blue pill</span> to copy a ready-made Lovable prompt.
           </p>
         </div>
 
@@ -378,5 +484,6 @@ export default function App() {
       </footer>
 
     </div>
+    </HintNavContext.Provider>
   );
 }
