@@ -92,7 +92,7 @@ export default function App() {
       <Section id="get-started" background={{ background_color: "navy" }} padding_top="large" padding_bottom="large" has_container inner_spacing="large">
         <div className="text-center">
           <DotSubheading subheading="Genius Sports × Lovable" colour="brightGreen" />
-          <h1 className="mt-4 mx-auto max-w-3xl">Get started with Lovable</h1>
+          <h1 className="mt-4">How to Get Started</h1>
           <p className="mt-4 font-body text-[18px] opacity-70 max-w-xl mx-auto">
             Three simple steps to launch Genius-branded web applications.
           </p>
@@ -182,7 +182,7 @@ export default function App() {
       {/* ── Disclaimer banner ────────────────────────────────────────────── */}
         <div className="bg-blue/[0.10] border-y border-blue/20 px-6 py-6 lg:px-12 text-center">
           <p className="font-body text-[16px] leading-normal text-navy/80">
-            <span className="font-semibold text-navy">Sample page</span> — hover any element to reveal its component badge, or click a <span className="font-semibold text-navy">blue pill</span> to copy a ready-made Lovable prompt.
+            <span className="font-semibold text-navy">Sample page</span> — hover elements to see component badges · click a <span className="font-semibold text-navy">blue pill</span> to copy a Lovable prompt.
           </p>
         </div>
 
@@ -238,7 +238,7 @@ export default function App() {
               }}>
                 <h1
                   className="is-large"
-                  dangerouslySetInnerHTML={{ __html: getSplitBreakText({ text: "The data and technology<> behind modern sport" }) }}
+                  dangerouslySetInnerHTML={{ __html: getSplitBreakText({ text: "The data and technology behind modern sport" }) }}
                 />
               </HintOverlay>
 
