@@ -176,7 +176,7 @@ export default function App() {
       {/* ── Disclaimer banner ────────────────────────────────────────────── */}
         <div className="bg-blue/[0.10] border-y border-blue/20 px-6 py-6 lg:px-12 text-center">
           <p className="font-body text-[16px] leading-normal text-navy/80">
-            <span className="font-semibold text-navy">Sample page</span> — hover elements to see component badges · click a <span className="font-semibold text-navy">blue pill</span> to copy a Lovable prompt.
+            <span className="font-semibold text-navy">Sample page</span> — hover elements to see component badges · click a <span className="font-semibold text-navy">blue pill</span> to view full section details.
           </p>
         </div>
 

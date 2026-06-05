@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Logo from "./components/brand/Logo";
 
 type PageType = "demo" | "catalog" | "brand-guide" | "glossary" | "best-practices";
@@ -293,6 +293,25 @@ function TermCard({ term, definition, lovableTip }: Term) {
 
 export default function Glossary({ onNavigate }: { onNavigate: (page: PageType) => void }) {
   const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].id);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveCategory(entry.target.id);
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px" }
+    );
+
+    CATEGORIES.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observerRef.current?.observe(el);
+    });
+
+    return () => observerRef.current?.disconnect();
+  }, []);
 
   return (
     <div className="min-h-screen bg-white text-navy">

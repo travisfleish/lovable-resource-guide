@@ -11,7 +11,7 @@ const NAV_PAGES: { id: PageType; label: string }[] = [
 ];
 
 const PAGE_SECTIONS = [
-  { id: "chatgpt-workflow",  label: "LovableGPT Workflow" },
+  { id: "chatgpt-workflow",  label: "LovableGPT" },
   { id: "glossary-usage",    label: "Using the Brand Guide" },
   { id: "before-you-start",  label: "Before You Start" },
   { id: "efficient-prompts", label: "Efficient Prompting" },
@@ -160,8 +160,8 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
                     href={`#${id}`}
                     className={`block rounded-lg px-3 py-2 font-body text-[14px] transition-colors ${
                       activeSection === id
-                        ? "bg-navy text-white"
-                        : "text-navy/50 hover:bg-lightGrey hover:text-navy"
+                        ? "bg-navy/[0.05] font-medium text-navy"
+                        : "text-navy/50 hover:bg-navy/5 hover:text-navy"
                     }`}
                   >
                     {label}

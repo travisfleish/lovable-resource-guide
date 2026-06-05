@@ -225,8 +225,8 @@ export default function MarketingCatalog({ onNavigate, initialAnchor }: { onNavi
                     href={`#${id}`}
                     className={`block rounded-lg px-3 py-2 font-body text-[14px] transition-colors ${
                       activeSection === id
-                        ? "bg-navy text-white"
-                        : "text-navy/50 hover:bg-lightGrey hover:text-navy"
+                        ? "bg-navy/[0.05] font-medium text-navy"
+                        : "text-navy/50 hover:bg-navy/5 hover:text-navy"
                     }`}
                   >
                     {label}
