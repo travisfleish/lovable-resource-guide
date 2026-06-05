@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Logo from "./components/brand/Logo";
 import Button from "./components/elements/Button";
 
@@ -8,7 +8,6 @@ const NAV_PAGES: { id: PageType; label: string }[] = [
   { id: "brand-guide", label: "Brand Guide" },
   { id: "glossary", label: "Glossary" },
   { id: "best-practices", label: "Best Practices" },
-  { id: "catalog", label: "Catalog" },
 ];
 
 const PAGE_SECTIONS = [
@@ -24,7 +23,7 @@ const PAGE_SECTIONS = [
 
 function SectionHeading({ id, title, subtitle }: { id: string; title: string; subtitle: string }) {
   return (
-    <div id={id} className="scroll-mt-16 mb-8 border-b border-lavenderGrey pb-6 pt-14 first:pt-12">
+    <div id={id} className="scroll-mt-20 mb-8 border-b border-lavenderGrey pb-6 pt-14 first:pt-12">
       <h2 className="font-heading text-[22px] font-medium text-navy">{title}</h2>
       <p className="mt-1.5 font-body text-[15px] text-navy/50">{subtitle}</p>
     </div>
@@ -93,25 +92,32 @@ function CopyPrompt({ label, text }: { label: string; text: string }) {
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function BestPractices({ onNavigate }: { onNavigate: (page: PageType) => void }) {
-  const [scrollY, setScrollY] = useState(0);
+  const [activeSection, setActiveSection] = useState(PAGE_SECTIONS[0].id);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px" }
+    );
 
-  const headerOpacity = Math.max(0, 1 - scrollY / 60);
-  const floatingNavVisible = scrollY > 50;
+    PAGE_SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observerRef.current?.observe(el);
+    });
+
+    return () => observerRef.current?.disconnect();
+  }, []);
 
   return (
     <div className="min-h-screen bg-white text-navy">
 
-      {/* ── Header (fades on scroll) ──────────────────────────────────── */}
-      <header
-        className="sticky top-0 z-50 border-b border-lavenderGrey bg-white/95 backdrop-blur-sm transition-opacity duration-200"
-        style={{ opacity: headerOpacity, pointerEvents: headerOpacity > 0.05 ? "auto" : "none" }}
-      >
+      {/* ── Header ───────────────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-50 border-b border-lavenderGrey bg-white/95 backdrop-blur-sm">
         <div className="container mx-auto flex h-14 items-center justify-between gap-6 px-6 lg:px-12">
           <div className="flex items-center gap-4">
             <button
@@ -141,50 +147,54 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
         </div>
       </header>
 
-      {/* ── Floating section nav ─────────────────────────────────────────── */}
-      <div
-        className="fixed left-1/2 top-4 z-50 -translate-x-1/2 transition-all duration-300"
-        style={{
-          opacity: floatingNavVisible ? 1 : 0,
-          transform: `translateX(-50%) translateY(${floatingNavVisible ? 0 : -6}px)`,
-          pointerEvents: floatingNavVisible ? "auto" : "none",
-        }}
-      >
-        <div className="flex items-center gap-0.5 rounded-full border border-lavenderGrey bg-white/95 px-2 py-1.5 shadow-md backdrop-blur-sm">
-          {PAGE_SECTIONS.map(({ id, label }) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              className="rounded-full px-3 py-1 font-body text-[12px] text-navy/60 transition-colors hover:bg-navy/5 hover:text-navy"
-            >
-              {label}
-            </a>
-          ))}
-        </div>
-      </div>
+      <div className="flex">
 
-      <main className="container mx-auto px-6 lg:px-12">
+        {/* ── Sidebar nav ─────────────────────────────────────────────────── */}
+        <aside className="hidden w-52 shrink-0 md:block">
+          <nav className="sticky top-14 max-h-[calc(100vh-3.5rem)] overflow-y-auto py-8 pl-6 pr-4">
+            <p className="mb-4 font-body text-[10px] uppercase tracking-[0.12em] text-navy/30">Jump to</p>
+            <ul className="space-y-0.5">
+              {PAGE_SECTIONS.map(({ id, label }) => (
+                <li key={id}>
+                  <a
+                    href={`#${id}`}
+                    className={`block rounded-lg px-3 py-2 font-body text-[14px] transition-colors ${
+                      activeSection === id
+                        ? "bg-navy text-white"
+                        : "text-navy/50 hover:bg-lightGrey hover:text-navy"
+                    }`}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
 
-        {/* ── Page title ──────────────────────────────────────────────────── */}
-        <div className="border-b border-lavenderGrey py-12">
-          <p className="mb-3 font-body text-[13px] uppercase tracking-[0.12em] text-navy/40">Genius Sports</p>
-          <h1 className="text-h2 font-light">Lovable Best Practices</h1>
-          <p className="mt-4 max-w-xl font-body text-[16px] text-navy/60">
-            How to build on-brand pages in Lovable effectively — from using the right terminology to writing prompts that get results first time.
-          </p>
-          <div className="mt-6 w-fit">
-            <a
-              href="https://docs.lovable.dev/tips-tricks/best-practice"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                link={{ title: "Lovable official best practices", url: "" }}
-                button={{ background_color: "lightGrey", type: "slim" }}
-              />
-            </a>
+        {/* ── Main content ────────────────────────────────────────────────── */}
+        <main className="min-w-0 flex-1 px-6 py-10 md:border-l md:border-lavenderGrey md:px-10 lg:px-16">
+
+          {/* Page intro */}
+          <div className="mb-12 border-b border-lavenderGrey pb-12">
+            <p className="mb-3 font-body text-[13px] uppercase tracking-[0.12em] text-navy/40">Genius Sports</p>
+            <h1 className="text-h2 font-light">Lovable Best Practices</h1>
+            <p className="mt-4 max-w-xl font-body text-[16px] text-navy/60">
+              How to build on-brand pages in Lovable effectively — from using the right terminology to writing prompts that get results first time.
+            </p>
+            <div className="mt-6 w-fit">
+              <a
+                href="https://docs.lovable.dev/tips-tricks/best-practice"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button
+                  link={{ title: "Lovable official best practices", url: "" }}
+                  button={{ background_color: "lightGrey", type: "slim" }}
+                />
+              </a>
+            </div>
           </div>
-        </div>
 
         {/* ════ LOVABLEGPT WORKFLOW ════════════════════════════════════════════ */}
         <SectionHeading
@@ -459,7 +469,9 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
 
         </div>
 
-      </main>
+        </main>
+
+      </div>{/* end flex */}
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
       <footer className="border-t border-lavenderGrey px-6 py-10 lg:px-12">

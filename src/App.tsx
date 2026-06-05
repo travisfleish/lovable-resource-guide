@@ -56,8 +56,8 @@ export default function App() {
         <nav className="hidden items-center gap-2 md:flex">
           {([
             { id: "brand-guide" as PageType, label: "Brand Guide" },
-            { id: "glossary" as PageType, label: "Glossary" },
             { id: "best-practices" as PageType, label: "Best Practices" },
+            { id: "glossary" as PageType, label: "Glossary" },
           ]).map(({ id, label }) => (
             <button
               key={id}
@@ -75,12 +75,6 @@ export default function App() {
           >
             LovableGPT
           </a>
-          <button
-            onClick={() => setPage("catalog")}
-            className="rounded-full px-4 py-2 font-heading text-[16px] font-normal text-white/80 transition-colors hover:text-white"
-          >
-            Catalog
-          </button>
         </nav>
         <Button
           link={{ title: "Get started", url: "#get-started" }}

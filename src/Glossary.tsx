@@ -7,7 +7,6 @@ const NAV_PAGES: { id: PageType; label: string }[] = [
   { id: "brand-guide", label: "Brand Guide" },
   { id: "glossary", label: "Glossary" },
   { id: "best-practices", label: "Best Practices" },
-  { id: "catalog", label: "Catalog" },
 ];
 
 // ─── Content ─────────────────────────────────────────────────────────────────
