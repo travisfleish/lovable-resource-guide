@@ -176,7 +176,7 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
         <main className="min-w-0 flex-1 px-6 py-10 md:border-l md:border-lavenderGrey md:px-10 lg:px-16">
 
           {/* Page intro */}
-          <div className="mb-12 border-b border-lavenderGrey pb-12">
+          <div className="mb-8">
             <p className="mb-3 font-body text-[13px] uppercase tracking-[0.12em] text-navy/40">Genius Sports</p>
             <h1 className="text-h2 font-light">Lovable Best Practices</h1>
             <p className="mt-4 max-w-xl font-body text-[16px] text-navy/60">
