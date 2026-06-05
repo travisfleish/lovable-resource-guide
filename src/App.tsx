@@ -266,8 +266,8 @@ export default function App() {
       {/* ── Stats row ────────────────────────────────────────────────────── */}
       <HintOverlay mode="section" hint={{
         component: "Stats Row",
-        description: "A row of key metrics, each showing a large number and a short label. Built directly with a grid — no special component needed.",
-        prompt: "Add a light grey section that shows four stats side by side. Each stat has a large bold number and a short label underneath.",
+        description: "A row of StatBlock components in a grid. Each block shows a large metric value and a short descriptor. Without a background prop the block renders with a bordered card style on light backgrounds.",
+        prompt: "Add a white section showing four stats side by side, each in a bordered card. Each stat has a large number and a short label.",
       }}>
         <Section background={{ background_color: "lightGrey" }} padding_top="small" padding_bottom="small" has_container>
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
@@ -278,14 +278,12 @@ export default function App() {
               { stat: "30+",  label: "Years of innovation" },
             ].map(({ stat, label }) => (
               <HintOverlay key={stat} mode="element" hint={{
-                component: "Stat",
-                description: "A large headline number with a short descriptive label below. Place several of these in a grid row to communicate key metrics at a glance.",
-                prompt: `Add a stat showing "${stat}" as a large number with "${label}" as the label below it. Centre both the number and label.`,
+                component: "StatBlock",
+                description: "A rounded card showing a large metric value and a short label. Accepts an optional background color token — omit it for a bordered light style, or pass a brand color for a filled card.",
+                prompt: `Add a StatBlock with value="${stat}" and label="${label}".`,
               }}>
                 <div className="flex flex-col items-center text-center">
-                  <span className="font-heading text-[48px] font-light leading-none tracking-[-0.04em] text-navy">
-                    {stat}
-                  </span>
+                  <span className="font-heading text-[48px] font-light leading-none tracking-[-0.04em] text-navy">{stat}</span>
                   <span className="mt-2 font-body text-[15px] text-navy/60">{label}</span>
                 </div>
               </HintOverlay>

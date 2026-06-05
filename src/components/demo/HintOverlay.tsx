@@ -90,12 +90,12 @@ function HintModal({
         </div>
 
         <div className="px-6 py-5">
-          <p className="font-body text-[15px] leading-relaxed text-navy/70">{hint.description}</p>
+          <p className="text-left font-body text-[15px] leading-relaxed text-navy/70">{hint.description}</p>
         </div>
 
         <div className="px-6 pb-6">
-          <p className="mb-2 font-body text-[11px] uppercase tracking-widest text-navy/40">
-            Lovable prompt — click to copy
+          <p className="mb-2 text-left font-body text-[11px] uppercase tracking-widest text-navy/40">
+            Example prompt
           </p>
           <button
             onClick={copy}
@@ -103,7 +103,7 @@ function HintModal({
           >
             <div className="mb-1.5 flex items-center justify-between">
               <span className="font-body text-[10px] uppercase tracking-widest text-blue/40">
-                Click to copy
+                Adapt &amp; copy
               </span>
               <span
                 className={`font-body text-[11px] transition-opacity ${

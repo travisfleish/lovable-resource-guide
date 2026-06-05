@@ -29,7 +29,7 @@ function PromptBox({ prompt }: { prompt: PromptPair }) {
 
   return (
     <div className="mt-5 space-y-3">
-      <p className="font-body text-[11px] uppercase tracking-[0.1em] text-navy/40">Lovable prompts — click to copy</p>
+      <p className="font-body text-[11px] uppercase tracking-[0.1em] text-navy/40">Example prompts</p>
 
       {/* Descriptive prompt */}
       <button
