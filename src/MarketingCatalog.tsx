@@ -245,7 +245,7 @@ export default function MarketingCatalog({ onNavigate, initialAnchor }: { onNavi
             <p className="mb-3 font-body text-[12px] uppercase tracking-[0.12em] text-navy/30">Genius Sports</p>
             <h1 className="text-h2 font-light">Brand Guide</h1>
             <p className="mt-4 font-body text-[16px] leading-relaxed text-navy/60">
-              Browse the visual building blocks available when creating with Lovable. For each element, you'll find two ready-to-use prompts — one conversational, one more precise.
+              Browse the visual building blocks available when creating with Lovable. Each element includes two example prompts showing how prompting language can vary — <strong className="font-medium text-navy/80">Describe it</strong> demonstrates a conversational approach for exploring ideas, while <strong className="font-medium text-navy/80">Using brand terms</strong> demonstrates a precise, technical approach for matching a specific design.
             </p>
           </div>
 
