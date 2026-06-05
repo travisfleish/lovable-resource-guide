@@ -52,7 +52,7 @@ export default function App() {
 
       {/* ── Nav ─────────────────────────────────────────────────────────── */}
       <header className={`sticky top-0 z-50 flex h-24 items-center justify-between bg-navy px-6 lg:px-12 transition-opacity duration-300 ${scrolled ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
-        <Logo variant="vertical" color="white" className="h-20 w-auto" />
+        <Logo variant="horizontal" color="white" className="h-14 w-auto" />
         <nav className="hidden items-center gap-2 md:flex">
           {([
             { id: "brand-guide" as PageType, label: "Brand Guide" },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "./components/brand/Logo";
 import Button from "./components/elements/Button";
 
@@ -12,8 +12,8 @@ const NAV_PAGES: { id: PageType; label: string }[] = [
 ];
 
 const PAGE_SECTIONS = [
-  { id: "glossary-usage",    label: "Using the Glossary" },
   { id: "chatgpt-workflow",  label: "LovableGPT Workflow" },
+  { id: "glossary-usage",    label: "Using the Brand Guide" },
   { id: "before-you-start",  label: "Before You Start" },
   { id: "efficient-prompts", label: "Efficient Prompting" },
   { id: "lovable-features",  label: "Lovable Features" },
@@ -24,7 +24,7 @@ const PAGE_SECTIONS = [
 
 function SectionHeading({ id, title, subtitle }: { id: string; title: string; subtitle: string }) {
   return (
-    <div id={id} className="scroll-mt-20 mb-8 border-b border-lavenderGrey pb-6 pt-14 first:pt-12">
+    <div id={id} className="scroll-mt-16 mb-8 border-b border-lavenderGrey pb-6 pt-14 first:pt-12">
       <h2 className="font-heading text-[22px] font-medium text-navy">{title}</h2>
       <p className="mt-1.5 font-body text-[15px] text-navy/50">{subtitle}</p>
     </div>
@@ -93,11 +93,25 @@ function CopyPrompt({ label, text }: { label: string; text: string }) {
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function BestPractices({ onNavigate }: { onNavigate: (page: PageType) => void }) {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const headerOpacity = Math.max(0, 1 - scrollY / 60);
+  const floatingNavVisible = scrollY > 50;
+
   return (
     <div className="min-h-screen bg-white text-navy">
 
-      {/* ── Header ───────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-lavenderGrey bg-white/95 backdrop-blur-sm">
+      {/* ── Header (fades on scroll) ──────────────────────────────────── */}
+      <header
+        className="sticky top-0 z-50 border-b border-lavenderGrey bg-white/95 backdrop-blur-sm transition-opacity duration-200"
+        style={{ opacity: headerOpacity, pointerEvents: headerOpacity > 0.05 ? "auto" : "none" }}
+      >
         <div className="container mx-auto flex h-14 items-center justify-between gap-6 px-6 lg:px-12">
           <div className="flex items-center gap-4">
             <button
@@ -127,6 +141,28 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
         </div>
       </header>
 
+      {/* ── Floating section nav ─────────────────────────────────────────── */}
+      <div
+        className="fixed left-1/2 top-4 z-50 -translate-x-1/2 transition-all duration-300"
+        style={{
+          opacity: floatingNavVisible ? 1 : 0,
+          transform: `translateX(-50%) translateY(${floatingNavVisible ? 0 : -6}px)`,
+          pointerEvents: floatingNavVisible ? "auto" : "none",
+        }}
+      >
+        <div className="flex items-center gap-0.5 rounded-full border border-lavenderGrey bg-white/95 px-2 py-1.5 shadow-md backdrop-blur-sm">
+          {PAGE_SECTIONS.map(({ id, label }) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              className="rounded-full px-3 py-1 font-body text-[12px] text-navy/60 transition-colors hover:bg-navy/5 hover:text-navy"
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      </div>
+
       <main className="container mx-auto px-6 lg:px-12">
 
         {/* ── Page title ──────────────────────────────────────────────────── */}
@@ -148,56 +184,6 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
               />
             </a>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {PAGE_SECTIONS.map(({ id, label }) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                className="rounded-full border border-lavenderGrey px-3 py-1.5 font-body text-[13px] text-navy/60 transition-colors hover:border-navy/30 hover:text-navy"
-              >
-                {label}
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {/* ════ USING THE GLOSSARY ════════════════════════════════════════════ */}
-        <SectionHeading
-          id="glossary-usage"
-          title="Using the Glossary"
-          subtitle="The Glossary is your cheat sheet when writing Lovable prompts. These tips show you how to use it effectively."
-        />
-
-        <div className="grid gap-4 pb-14 md:grid-cols-2">
-          <TipCard number="1" title="Use exact component names">
-            <p>
-              Instead of "add a hero section", say "add a <strong>TextMasthead</strong> section". Instead of "add a banner at the bottom", say "add a <strong>GetStartedCTA</strong>".
-            </p>
-            <p>Lovable understands these component names from the brand kit and will generate the correctly styled component.</p>
-          </TipCard>
-
-          <TipCard number="2" title="Reference colors by token name">
-            <p>
-              Say "set the Section background_color to <strong>navy</strong>" instead of "make the background dark blue". Say "use <strong>brightGreen</strong> for the subheading dot" instead of "use a bright lime green".
-            </p>
-            <p>All 17 color token names are in the Glossary. Using exact names prevents Lovable from guessing the wrong shade.</p>
-          </TipCard>
-
-          <TipCard number="3" title="Name typography classes explicitly">
-            <p>
-              If you want a specific size, say "use the <strong>text-h2</strong> class for the heading" or "use <strong>font-body text-16</strong> for the body copy".
-            </p>
-            <p>This keeps type choices consistent and on-brand rather than defaulting to Tailwind's generic sizes.</p>
-          </TipCard>
-
-          <TipCard number="4" title="Specify logo and icon modes">
-            <p>
-              When requesting a logo, include the variant and color: "add a <strong>Logo</strong> with variant <strong>horizontal</strong> and color <strong>white</strong>" (for dark backgrounds) or color <strong>blue</strong> (for light backgrounds).
-            </p>
-            <p>
-              For BrandIcons: use mode <strong>dark</strong> on navy backgrounds, mode <strong>light</strong> on white or grey backgrounds.
-            </p>
-          </TipCard>
         </div>
 
         {/* ════ LOVABLEGPT WORKFLOW ════════════════════════════════════════════ */}
@@ -257,6 +243,45 @@ export default function BestPractices({ onNavigate }: { onNavigate: (page: PageT
               For small, targeted changes — "change the Section background_color to lightGrey", "update the heading text to X" — you can prompt Lovable directly. LovableGPT pays off most for new pages, large sections, or complex multi-component builds where getting the structure right first time saves the most credits.
             </p>
           </div>
+        </div>
+
+        {/* ════ USING THE BRAND GUIDE ═════════════════════════════════════════ */}
+        <SectionHeading
+          id="glossary-usage"
+          title="Using the Brand Guide"
+          subtitle="The Brand Guide is your cheat sheet when writing Lovable prompts. These tips show you how to use it effectively."
+        />
+
+        <div className="grid gap-4 pb-14 md:grid-cols-2">
+          <TipCard number="1" title="Use exact component names">
+            <p>
+              Instead of "add a hero section", say "add a <strong>TextMasthead</strong> section". Instead of "add a banner at the bottom", say "add a <strong>GetStartedCTA</strong>".
+            </p>
+            <p>Lovable understands these component names from the brand kit and will generate the correctly styled component.</p>
+          </TipCard>
+
+          <TipCard number="2" title="Reference colors by token name">
+            <p>
+              Say "set the Section background_color to <strong>navy</strong>" instead of "make the background dark blue". Say "use <strong>brightGreen</strong> for the subheading dot" instead of "use a bright lime green".
+            </p>
+            <p>All 17 color token names are in the Brand Guide. Using exact names prevents Lovable from guessing the wrong shade.</p>
+          </TipCard>
+
+          <TipCard number="3" title="Name typography classes explicitly">
+            <p>
+              If you want a specific size, say "use the <strong>text-h2</strong> class for the heading" or "use <strong>font-body text-16</strong> for the body copy".
+            </p>
+            <p>This keeps type choices consistent and on-brand rather than defaulting to Tailwind's generic sizes.</p>
+          </TipCard>
+
+          <TipCard number="4" title="Specify logo and icon modes">
+            <p>
+              When requesting a logo, include the variant and color: "add a <strong>Logo</strong> with variant <strong>horizontal</strong> and color <strong>white</strong>" (for dark backgrounds) or color <strong>blue</strong> (for light backgrounds).
+            </p>
+            <p>
+              For BrandIcons: use mode <strong>dark</strong> on navy backgrounds, mode <strong>light</strong> on white or grey backgrounds.
+            </p>
+          </TipCard>
         </div>
 
         {/* ════ BEFORE YOU START ══════════════════════════════════════════════ */}

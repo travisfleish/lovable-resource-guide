@@ -94,13 +94,55 @@
 
 ---
 
-### Stats bar
+### Stats bar — plain bordered cards (light background)
 
 **Describe it** *(starting from scratch — gives Lovable creative room)*
-> Add a centered row of three statistics on a white background: "150+ Federations", "1B+ Data events/year", and "30+ Years of innovation". Each stat should have a large bold number/value and a smaller label below it.
+> Add a row of four key statistics on a white or light grey background. Each stat should have a large number, a short blue divider line, and a label beneath it. Use bordered cards with no background fill.
 
 **Using brand terms** *(following a design handoff — keeps Lovable on-spec)*
-> Add a Section with background_color 'white', padding_top 'small', padding_bottom 'small', has_container true. Inside, add a 3-column grid. Each cell has an h3 or h4 heading for the number (font-light or font-medium) and a paragraph using font-body text-15 text-navy/60 for the label.
+> Add a Section with background_color 'lightGrey', padding_top 'medium', padding_bottom 'medium', has_container true. Inside, add a 4-column grid of StatBlock components: value '3B+' label 'data events processed daily', value '150+' label 'sports federations partnered', value '47%' label 'increase in fan engagement', value '95%' label 'live match uptime guaranteed'.
+
+---
+
+### Stats bar — colored backgrounds
+
+**Describe it** *(starting from scratch — gives Lovable creative room)*
+> Add a row of stat cards each with a different brand color background — blue, navy, bright green, and light blue. Each card shows a large metric and a short label.
+
+**Using brand terms** *(following a design handoff — keeps Lovable on-spec)*
+> Add four StatBlock components in a grid with backgrounds: 'blue' (value '3B+', label 'data events processed daily'), 'navy' (value '150+', label 'sports federations'), 'brightGreen' (value '47%', label 'fan engagement lift'), 'lightBlue' (value '95%', label 'match uptime guaranteed').
+
+---
+
+### Stats bar — on a dark navy section
+
+**Describe it** *(starting from scratch — gives Lovable creative room)*
+> Add a row of stats inside a dark navy section. The cards should have no background fill — just the large number, a bright green divider, and white label text floating on the navy background.
+
+**Using brand terms** *(following a design handoff — keeps Lovable on-spec)*
+> Add a Section with background_color 'navy', padding_top 'medium', padding_bottom 'medium', has_container true. Inside, add a 4-column grid of StatBlock components with dark={true}: value '3B+' label 'data events daily', value '150+' label 'sports federations', value '47%' label 'fan engagement lift', value '95%' label 'match uptime'.
+
+---
+
+## LINE BLOCKS
+
+### Diagonal lines bleeding off the corner of a hero section
+
+**Describe it** *(starting from scratch — gives Lovable creative room)*
+> Add diagonal bright green lines in the top-right corner of the hero section that bleed off the edge. The lines should feel like a graphic design element — not boxed in.
+
+**Using brand terms** *(following a design handoff — keeps Lovable on-spec)*
+> Add a LineBlock with color 'brightGreen', steps 20, rotation 45 inside an absolute-positioned div in the top-right of the hero section. No clip needed — the section's own overflow-hidden handles the boundary. Set the div to roughly h-48 w-48.
+
+---
+
+### Standalone decorative rectangle of lines
+
+**Describe it** *(starting from scratch — gives Lovable creative room)*
+> Add a rectangular block of parallel brand-blue vertical lines as a standalone decorative element. The lines should be clipped to a hard rectangle — not bleeding out.
+
+**Using brand terms** *(following a design handoff — keeps Lovable on-spec)*
+> Add a LineBlock with color 'blue', steps 20, clip={true}, and className 'h-40 w-full'.
 
 ---
 
@@ -232,5 +274,5 @@
 **Using brand terms** *(following a design handoff — keeps Lovable on-spec)*
 > 1. Add a sticky header with bg-white and a Logo (variant: horizontal, color: blue, h-8) and a Button (background_color: light-grey, type: header, "Contact Sales").
 > 2. Add a Section (background_color: navy, padding_top: xLarge, has_container: true) with a TextMasthead (alignment: center, text_size: large, subheading: "Sports Integrity", subheading_colour: { colours: brightGreen }, heading: "Protecting the fairness<> of competition", content, a white default Button ("Learn more"), a white TextLink ("Speak to our team"), add_springs: true, spring_colour: { colours: blue }).
-> 3. Add a Section (background_color: lightGrey, padding_top: medium, has_container: true) with a 3-column stat grid. Each stat has an h3 font-light number and a text-15 font-body label.
+> 3. Add a Section (background_color: lightGrey, padding_top: medium, has_container: true) with a 3-column grid of StatBlock components: value '150+' label 'Federations', value 'Real-time' label 'Live monitoring', value '20+' label 'Years of experience'.
 > 4. Add a GetStartedCTA (heading: "Ready to protect your sport?", content: "Talk to our team today.", link: { title: "Get in touch", url: "/contact" }).

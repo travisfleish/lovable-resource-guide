@@ -1062,7 +1062,7 @@ ease: [0.68, -0.2, 0.15, 0.98]`}</Code>
           <PropsTable>
             <PropRow prop="variant"   type='"horizontal" | "vertical" | "wordmark" | "marque"' desc="Which logo lockup to render." />
             <PropRow prop="color"     type='"blue" | "white"'  desc="Color version. Use white on dark backgrounds." />
-            <PropRow prop="className" type="string"             desc="Controls display size — set h-* w-auto." />
+            <PropRow prop="className" type="string"             desc="Controls display size. Use w-[Xpx] h-auto (width-first) to honour brand minimums: vertical ≥110px, horizontal/wordmark ≥70px, marque ≥40px." />
           </PropsTable>
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             <div className="flex flex-col gap-8 rounded-2xl border border-lavenderGrey p-10">
@@ -1071,7 +1071,7 @@ ease: [0.68, -0.2, 0.15, 0.98]`}</Code>
                 {(["horizontal", "wordmark", "marque", "vertical"] as const).map((v) => (
                   <div key={v} className="flex flex-col gap-1">
                     <span className="font-mono text-[10px] text-navy/30">{v}</span>
-                    <Logo variant={v} color="blue" className="h-12 w-auto" />
+                    <Logo variant={v} color="blue" className="w-[160px] h-auto" />
                   </div>
                 ))}
               </div>
@@ -1082,15 +1082,17 @@ ease: [0.68, -0.2, 0.15, 0.98]`}</Code>
                 {(["horizontal", "wordmark", "marque", "vertical"] as const).map((v) => (
                   <div key={v} className="flex flex-col gap-1">
                     <span className="font-mono text-[10px] text-white/30">{v}</span>
-                    <Logo variant={v} color="white" className="h-12 w-auto" />
+                    <Logo variant={v} color="white" className="w-[160px] h-auto" />
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          <Code>{`<Logo variant="horizontal" color="blue"  className="h-10 w-auto" /> {/* nav on white bg */}
-<Logo variant="horizontal" color="white" className="h-10 w-auto" /> {/* nav on dark bg */}
-<Logo variant="marque"     color="blue"  className="h-16 w-auto" /> {/* icon only */}`}</Code>
+          <Code>{`{/* Width-first sizing respects brand minimums (vertical ≥110px, horizontal/wordmark ≥70px, marque ≥40px) */}
+<Logo variant="vertical"   color="white" className="w-[110px] h-auto" /> {/* hero / large display */}
+<Logo variant="horizontal" color="blue"  className="h-14 w-auto" />      {/* nav on white bg — h-14 → ~114px wide */}
+<Logo variant="horizontal" color="white" className="h-14 w-auto" />      {/* nav on dark bg */}
+<Logo variant="marque"     color="blue"  className="w-[40px] h-auto" />  {/* icon only */}`}</Code>
         </CatalogSection>
 
         {/* ════════════════════════════════════════════════════════════════ */}

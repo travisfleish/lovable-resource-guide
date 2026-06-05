@@ -80,8 +80,9 @@ Point them to the components available:
 - **Labels**: DotSubheading (pill with colored dot), PillTag (blue badge)
 - **Typography**: h1–h7 headings, body text sizes (text-22 down to text-9)
 - **Emphasis**: HighlightedText (colored words in headings using |pipes|)
+- **Stats**: StatBlock (large value + label + optional color background)
 - **Brand**: Logo (4 variants), BrandIcon (25 icons)
-- **Decoration**: CustomLines (tapered line patterns)
+- **Decoration**: LineBlock (parallel lines at 45°, bleeds or clips)
 
 ## Tone
 

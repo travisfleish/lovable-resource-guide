@@ -176,7 +176,7 @@ export default function MarketingCatalog({ onNavigate, initialAnchor }: { onNavi
             </button>
             <span className="text-navy/20">/</span>
             <div className="flex items-center gap-2.5">
-              <Logo variant="marque" color="blue" className="h-5 w-auto" />
+              <Logo variant="marque" color="blue" className="w-[40px] h-auto" />
               <span className="font-heading text-[15px] font-medium text-navy">Brand Guide</span>
             </div>
           </div>
@@ -928,7 +928,7 @@ export default function MarketingCatalog({ onNavigate, initialAnchor }: { onNavi
                 {(["horizontal", "wordmark", "marque", "vertical"] as const).map((v) => (
                   <div key={v} className="flex flex-col gap-1.5">
                     <p className="font-mono text-[10px] text-navy/30 capitalize">{v}</p>
-                    <Logo variant={v} color="blue" className="h-10 w-auto" />
+                    <Logo variant={v} color="blue" className="w-[160px] h-auto" />
                   </div>
                 ))}
               </div>
@@ -937,7 +937,7 @@ export default function MarketingCatalog({ onNavigate, initialAnchor }: { onNavi
                 {(["horizontal", "wordmark", "marque", "vertical"] as const).map((v) => (
                   <div key={v} className="flex flex-col gap-1.5">
                     <p className="font-mono text-[10px] text-white/30 capitalize">{v}</p>
-                    <Logo variant={v} color="white" className="h-10 w-auto" />
+                    <Logo variant={v} color="white" className="w-[160px] h-auto" />
                   </div>
                 ))}
               </div>
@@ -945,7 +945,7 @@ export default function MarketingCatalog({ onNavigate, initialAnchor }: { onNavi
             <PromptBox
               prompt={{
                 descriptive: "Add the Genius Sports horizontal logo in the top left of the navigation. Use the blue version since the nav has a white background.",
-                specific: "Add a Logo with variant 'horizontal' and color 'blue' in the header nav. Set className to 'h-10 w-auto'.",
+                specific: "Add a Logo with variant 'horizontal' and color 'blue' in the header nav. Set className to 'h-14 w-auto'.",
               }}
             />
           </section>

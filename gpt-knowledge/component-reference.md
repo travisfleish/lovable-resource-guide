@@ -5,14 +5,25 @@
 
 ## COLORS
 
-17 named color tokens. Always refer to these by name, never by hex value.
+### Core brand colors (use these first)
+
+| Token name    | Hex      | Role |
+|---------------|----------|------|
+| blue          | #0000DC  | **Primary brand color** — CTAs, links, highlight sections |
+| navy          | #0D1226  | Dark base — hero sections, dark backgrounds |
+| brightGreen   | #E1FF67  | Accent / energy — high-emphasis highlights, use sparingly |
+| lightBlue     | #95ECFD  | Secondary accent — soft highlight on dark backgrounds |
+
+### Full palette (17 tokens total)
+
+Always refer to colors by name, never by hex value.
 
 | Token name    | Hex      | Use on text? | Notes |
 |---------------|----------|-------------|-------|
+| blue          | #0000DC  | Yes         | Primary brand color |
 | navy          | #0D1226  | Yes         | Primary dark — hero sections, dark backgrounds |
-| blue          | #0000DC  | Yes         | Brand blue — CTA sections, accent color |
-| lightBlue     | #95ECFD  | Accent      | Soft highlight on dark backgrounds |
 | brightGreen   | #E1FF67  | Accent      | High-energy accent, use sparingly |
+| lightBlue     | #95ECFD  | Accent      | Soft highlight on dark backgrounds |
 | lightGreen    | #18C971  | Accent      | Mid-tone green accent |
 | green         | #047C40  | Yes         | Deep green |
 | lightPurple   | #C2D1FF  | Accent      | Soft section background or highlight |
@@ -286,7 +297,19 @@ Genius Sports logo in four variants.
   - wordmark — text only
   - marque — G mark icon only
 - `color`: `"blue"` (on light backgrounds) | `"white"` (on dark backgrounds)
-- `className` — size control: use `h-10 w-auto` for standard nav size
+- `className` — size control: use width-first sizing (`w-[Xpx] h-auto`) to respect brand minimums
+
+**Brand minimum widths (never go below these):**
+- vertical: 110px → use `w-[110px] h-auto` or larger
+- horizontal: 70px → use `h-14 w-auto` (renders ~114px wide) for navigation
+- wordmark: 70px → use `h-14 w-auto` or `w-[70px] h-auto`
+- marque: 40px → use `w-[40px] h-auto` or larger
+
+**Variant selection by context:**
+- Navigation bar: use `horizontal` (limited vertical space)
+- Hero / large display: use `vertical` (most prominent version)
+- Narrow horizontal placement: use `wordmark`
+- Tight space / icon only: use `marque`
 
 **Rules:**
 - Always use `color="blue"` on white/light backgrounds
@@ -312,15 +335,48 @@ basketball, cloud, data, distribute, engage, euros, fans, field, football, liveD
 
 ---
 
-### CustomLines
+### LineBlock
 
-Decorative tapered horizontal or vertical line patterns. Used as section backgrounds or decorative elements.
+The core graphic asset of the GS visual language. A rectangle of parallel lines graduating from thin to thick, always aligned to the 45° angle of the G logo. By default lines extend freely beyond the component bounds so they can bleed across layouts. Add `clip={true}` or wrap in `overflow-hidden` when you need a hard-edged standalone block.
 
 **Props:**
-- `lineNumber` — number of lines (e.g. 6, 8, 12)
-- `lineDirection` — `"horizontal"` or `"vertical"`
-- `lineClassName` — Tailwind background color class (e.g. `bg-lavenderGrey`, `bg-blue/20`, `bg-brightGreen/40`)
-- `initialLineWidth` — width of the widest line in px (lines taper from this value)
+- `color` — brand token name (e.g. `"blue"`, `"brightGreen"`, `"white"`) — default `"blue"`
+- `steps` — number of lines; 14 = sparse, 20 = standard, 30 = dense — default `20`
+- `rotation` — degrees; `45` is the canonical brand angle — default `0` (vertical lines)
+- `clip` — `true` clips lines to the bounding box; `false` (default) lets them bleed freely
+- `className` — size control via Tailwind (e.g. `"h-40 w-full"`)
+
+**Important**: The `motion.div` has no intrinsic size — always set a height via `className`.
+
+**When lines bleed vs. clip:**
+- Use **no clip** (default) for background decorations inside a section — the section's own `overflow-hidden` handles the boundary
+- Use **`clip={true}`** for a standalone decorative rectangle (e.g. a card or panel element)
+
+**Example prompts:**
+- "Add a LineBlock with color 'brightGreen', steps 20, rotation 45 inside an absolute-positioned div in the top-right corner of the hero section. No clip needed — the section clips at its own edge."
+- "Add a LineBlock with color 'blue', steps 20, clip={true}, and className 'h-40 w-full' as a standalone decorative block."
+
+---
+
+### StatBlock
+
+A large headline number with a short descriptor, separated by a colored divider line. Use in rows of 3–4 to showcase key metrics.
+
+**Props:**
+- `value` — the stat value (e.g. `"3B+"`, `"150+"`, `"47%"`)
+- `label` — short descriptor text below the divider
+- `background` — optional brand token name for a colored background (e.g. `"blue"`, `"navy"`, `"brightGreen"`, `"lightBlue"`). Omit for a plain bordered card.
+- `dark` — `true` forces white text when placed inside a dark parent section (no background prop set)
+- `className` — additional Tailwind classes
+
+**Divider line color:**
+- On light backgrounds (no `background` prop, or light `background`): blue divider
+- On dark backgrounds (`dark={true}` or a dark `background` token): brightGreen divider
+
+**Example prompts:**
+- "Add four StatBlock components in a grid: value '3B+' label 'data events processed daily', value '150+' label 'sports federations partnered', value '47%' label 'increase in fan engagement', value '95%' label 'live match uptime guaranteed'."
+- "Add four StatBlock components with backgrounds: 'blue', 'navy', 'brightGreen', 'lightBlue'. Each with a relevant value and label."
+- "Add StatBlock components with dark={true} inside a navy Section. The StatBlock automatically uses white text and a brightGreen divider line."
 
 ---
 
@@ -361,11 +417,18 @@ Section (background: navy or white, padding: large)
         └── Button (white on navy bg, navy on white bg)
 ```
 
-### Stats or features row
+### Stats row
 ```
-Section (background: lightGrey, padding: medium, has_container)
-  └── [grid of stat items]
-        Each item: h4 heading + text-15 body text
+Section (background: lightGrey or white, padding: medium, has_container)
+  └── [3–4 column grid of StatBlock components]
+        Each StatBlock: value + label (+ optional background color)
+```
+
+### Stats row on dark background
+```
+Section (background: navy, padding: medium, has_container)
+  └── [3–4 column grid of StatBlock components, dark={true}]
+        StatBlock uses white text + brightGreen divider automatically
 ```
 
 ### CTA banner (page footer section)
