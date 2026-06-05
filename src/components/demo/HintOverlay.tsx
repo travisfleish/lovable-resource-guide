@@ -99,7 +99,7 @@ function HintModal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between border-b border-lavenderGrey px-6 pb-5 pt-6">
-          <div>
+          <div className="text-left">
             <span className="mb-1.5 block font-body text-[11px] uppercase tracking-widest text-navy/40">
               Component
             </span>
